@@ -1174,9 +1174,9 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
           
           {/* Tabs for Web View */}
           <div className="flex gap-4 border-b border-[#1e1e1e] mb-8 print:hidden overflow-x-auto whitespace-nowrap">
-            <button onClick={() => setActiveTab('overview')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'overview' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>OVERVIEW</button>
-            <button onClick={() => setActiveTab('experience')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'experience' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>EXPERIENCE</button>
-            <button onClick={() => setActiveTab('coverletter')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'coverletter' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>COVER LETTER</button>
+            <button onClick={() => setActiveTab('overview')} className={`pb-4 px-2 text-sm font-bold tracking-widest border-b-2 transition-all ${activeTab === 'overview' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>개요</button>
+            <button onClick={() => setActiveTab('experience')} className={`pb-4 px-2 text-sm font-bold tracking-widest border-b-2 transition-all ${activeTab === 'experience' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>경험</button>
+            <button onClick={() => setActiveTab('coverletter')} className={`pb-4 px-2 text-sm font-bold tracking-widest border-b-2 transition-all ${activeTab === 'coverletter' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>자기소개서</button>
           </div>
 
           <div className="space-y-6 print:space-y-4">
@@ -1195,7 +1195,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
             <h3 className="text-xl font-bold mb-6 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><GraduationCap className="w-6 h-6" /> 학력 및 교육</h3>
             <div className="space-y-8 print:space-y-4">
               {data.education.map((edu, idx) => (
-                <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a]">
+                <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a] print:break-inside-avoid">
                   <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-none bg-[#555]"></div>
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-bold text-lg text-[#e8e4dc]">
@@ -1239,7 +1239,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
             <h3 className="text-xl font-bold mb-6 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Briefcase className="text-[#800020] w-6 h-6" /> 프로젝트 경험</h3>
             <div className="space-y-8 print:space-y-4">
               {data.experience.map((exp, idx) => (
-                <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a]">
+                <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a] print:break-inside-avoid">
                   <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-none bg-[#800020]"></div>
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-bold text-lg text-[#e8e4dc]">
@@ -1265,14 +1265,14 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         <div className={activeTab === 'coverletter' ? 'block print:break-before-page' : 'hidden print:block print:break-before-page'}>
           {/* Self Introduction */}
           <div className="flex flex-col gap-2 mb-10 print:mb-6">
-            <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.25em] font-bold">Cover Letter</span>
+            <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.25em] font-bold">자기소개서 전문</span>
             <h3 className="text-3xl md:text-4xl font-display font-bold text-[#e8e4dc] tracking-[-0.02em]">자기소개서</h3>
           </div>
         
         {data.selfIntroductions ? (
           <div className="flex flex-col gap-10">
             {data.selfIntroductions.map((intro, idx) => (
-              <div key={idx} className="relative group">
+              <div key={idx} className="relative group print:break-inside-avoid">
                 {isEditing && (
                   <button onClick={() => { if (confirm("삭제하시겠습니까?")) { const n = [...(data.selfIntroductions || [])]; n.splice(idx, 1); setData({...data, selfIntroductions: n}); }}}
                     className="absolute top-6 right-6 z-20 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg" title="삭제">
