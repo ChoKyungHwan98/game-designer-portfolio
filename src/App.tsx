@@ -1064,17 +1064,17 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         </motion.button>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 print:grid-cols-12 print:gap-12">
+      <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 print:grid-cols-12 print:gap-8">
         {/* Sidebar */}
-        <div className="lg:col-span-4 print:col-span-4 space-y-12 lg:sticky lg:top-24 self-start">
+        <div className="lg:col-span-4 print:col-span-4 space-y-12 print:space-y-6 lg:sticky lg:top-24 self-start">
           <div className="text-center lg:text-left">
-            <div className="w-40 h-40 rounded-3xl overflow-hidden mb-8 mx-auto lg:mx-0 border border-[#1e1e1e] shadow-sm print:shadow-none">
+            <div className="w-40 h-40 print:w-32 print:h-32 print:mb-4 rounded-3xl overflow-hidden mb-8 mx-auto lg:mx-0 border border-[#1e1e1e] shadow-sm print:shadow-none">
               <img src="https://picsum.photos/seed/profile/400/400" alt="Profile" className="w-full h-full object-cover grayscale opacity-80" />
             </div>
-            <h1 className="text-4xl font-display font-bold mb-3 text-[#e8e4dc] tracking-tight">
+            <h1 className="text-4xl print:text-3xl font-display font-bold mb-3 text-[#e8e4dc] tracking-tight">
               <EditableText value={data.name} onSave={(v) => setData({...data, name: v})} isEditing={isEditing} />
             </h1>
-            <p className="text-[#800020] font-bold mb-8 font-mono tracking-widest text-sm uppercase">
+            <p className="text-[#800020] font-bold mb-8 print:mb-4 font-mono tracking-widest text-sm uppercase">
               <EditableText value={data.role} onSave={(v) => setData({...data, role: v})} isEditing={isEditing} />
             </p>
             <div className="space-y-4 text-sm text-[#888] font-medium">
@@ -1091,9 +1091,9 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
             </div>
           </div>
 
-          <div className="space-y-10">
+          <div className="space-y-10 print:space-y-6">
             <div>
-              <h3 className="text-xs font-bold text-[#555] tracking-widest uppercase mb-6 flex items-center gap-2"><Wrench className="w-4 h-4" /> 기술 스택</h3>
+              <h3 className="text-xs font-bold text-[#555] tracking-widest uppercase mb-6 print:mb-3 flex items-center gap-2"><Wrench className="w-4 h-4" /> 기술 스택</h3>
               <div className="space-y-6">
                 <div>
                   <p className="text-[10px] font-bold text-[#555] uppercase mb-3">기획 및 문서화</p>
@@ -1126,8 +1126,8 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
               </div>
             </div>
             <div>
-              <h3 className="text-xs font-bold text-[#555] tracking-widest uppercase mb-6 flex items-center gap-2"><Zap className="w-4 h-4" /> 핵심 역량</h3>
-              <ul className="space-y-4 text-sm text-[#888] font-medium">
+              <h3 className="text-xs font-bold text-[#555] tracking-widest uppercase mb-6 print:mb-3 flex items-center gap-2"><Zap className="w-4 h-4" /> 핵심 역량</h3>
+              <ul className="space-y-4 print:space-y-2 text-sm text-[#888] font-medium">
                 {["기획 의도를 먼저 세우고 목차로 증명하는 문서 설계", "법학적 사고 기반 시스템 정합성 확보", "AI 프롬프트 설계를 통한 업무 자동화"].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div className="w-2 h-2 rounded-full bg-[#800020] mt-1.5 shrink-0"></div>
@@ -1140,19 +1140,19 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-8 print:col-span-8 space-y-8">
+        <div className="lg:col-span-8 print:col-span-8 space-y-8 print:space-y-4">
           {/* Summary */}
-          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-3 text-[#e8e4dc]"><User className="w-6 h-6" /> 자기소개</h3>
-            <p className="text-[#888] leading-relaxed font-medium">
+          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 print:p-6 shadow-sm border border-[#1e1e1e]">
+            <h3 className="text-xl font-bold mb-6 print:mb-3 flex items-center gap-3 text-[#e8e4dc]"><User className="w-6 h-6" /> 자기소개</h3>
+            <p className="text-[#888] print:text-[13px] print:leading-relaxed leading-relaxed font-medium">
               <EditableText value={data.summary} onSave={(v) => setData({...data, summary: v})} isEditing={isEditing} multiline />
             </p>
           </section>
 
           {/* Education */}
-          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-3 text-[#e8e4dc]"><GraduationCap className="w-6 h-6" /> 학력 및 교육</h3>
-            <div className="space-y-10">
+          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 print:p-6 shadow-sm border border-[#1e1e1e]">
+            <h3 className="text-xl font-bold mb-8 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><GraduationCap className="w-6 h-6" /> 학력 및 교육</h3>
+            <div className="space-y-10 print:space-y-4">
               {data.education.map((edu, idx) => (
                 <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a]">
                   <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-none bg-[#555]"></div>
@@ -1176,9 +1176,9 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
           </section>
 
           {/* Experience */}
-          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-3 text-[#e8e4dc]"><Briefcase className="text-[#800020] w-6 h-6" /> 프로젝트 경험</h3>
-            <div className="space-y-10">
+          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 print:p-6 shadow-sm border border-[#1e1e1e]">
+            <h3 className="text-xl font-bold mb-8 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Briefcase className="text-[#800020] w-6 h-6" /> 프로젝트 경험</h3>
+            <div className="space-y-10 print:space-y-4">
               {data.experience.map((exp, idx) => (
                 <div key={idx} className="relative pl-8 border-l-2 border-[#2a2a2a]">
                   <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-none bg-[#800020]"></div>
@@ -1202,9 +1202,9 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
           </section>
 
           {/* Awards */}
-          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-8 flex items-center gap-3 text-[#e8e4dc]"><Award className="text-[#800020] w-6 h-6" /> 자격 및 수상</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <section className="bg-[#111] rounded-3xl p-8 lg:p-12 print:p-6 shadow-sm border border-[#1e1e1e]">
+            <h3 className="text-xl font-bold mb-8 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Award className="text-[#800020] w-6 h-6" /> 자격 및 수상</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-3">
               {data.awards.map((award, idx) => (
                 <div key={idx} className="p-5 bg-[#1a1a1a] rounded-2xl border-l-4 border-l-[#800020]">
                   <h4 className="font-bold text-sm mb-1 text-[#e8e4dc]">
@@ -1219,8 +1219,8 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
       </div>
 
       {/* Self Introduction */}
-      <div className="mt-24 pt-24 border-t border-[#1e1e1e]">
-        <div className="flex flex-col gap-2 mb-14">
+      <div className="mt-24 pt-24 border-t border-[#1e1e1e] print:break-before-page print:mt-4 print:pt-4 print:border-none">
+        <div className="flex flex-col gap-2 mb-14 print:mb-6">
           <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.25em] font-bold">Cover Letter</span>
           <h3 className="text-3xl md:text-4xl font-display font-bold text-[#e8e4dc] tracking-[-0.02em]">자기소개서</h3>
         </div>
@@ -1236,7 +1236,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
                   </button>
                 )}
                 {/* Logline header */}
-                <div className="flex items-start gap-5 mb-6">
+                <div className="flex items-start gap-5 mb-6 print:mb-3">
                   <div className="w-10 h-10 shrink-0 rounded-xl bg-[#800020]/10 flex items-center justify-center text-[#800020] font-mono font-bold text-sm border border-[#800020]/20">
                     {String(idx + 1).padStart(2, '0')}
                   </div>
@@ -1245,7 +1245,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
                   </h4>
                 </div>
                 {/* Content body */}
-                <div className="ml-[60px] text-[#999] leading-[2] text-[15px] md:text-base bg-[#111] p-8 md:p-10 rounded-2xl border border-[#1e1e1e] hover:border-[#2a2a2a] transition-colors">
+                <div className="ml-[60px] text-[#999] leading-[2] text-[15px] md:text-base bg-[#111] p-8 md:p-10 print:p-6 print:py-4 rounded-2xl border border-[#1e1e1e] hover:border-[#2a2a2a] transition-colors">
                   {isEditing ? (
                     <EditableText value={intro.content} onSave={(v) => { const n = [...(data.selfIntroductions || [])]; n[idx].content = v; setData({...data, selfIntroductions: n}); }} isEditing={isEditing} multiline />
                   ) : (
