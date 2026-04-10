@@ -1072,6 +1072,7 @@ interface ResumeProps {
 }
 
 const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'experience' | 'coverletter'>('overview');
   const handleDownload = () => { window.print(); };
 
   return (
@@ -1128,7 +1129,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
                       { name: 'Notion', desc: '• 전반적인 문서 작성 및 간트차트 작성' },
                       { name: 'Figma', desc: '• UI 와이어프레임 작성' }
                     ].map(tool => (
-                      <span key={tool.name} className="group relative px-4 py-2 bg-[#1a1a1a] rounded-xl text-xs font-bold text-[#888] border border-[#2a2a2a] hover:border-[#800020] hover:bg-[#800020]/5 hover:text-[#e8e4dc] transition-all cursor-help flex items-center justify-center gap-2 overflow-hidden">
+                      <span key={tool.name} className="group relative px-4 py-2 bg-[#1a1a1a] rounded-xl text-xs font-bold text-[#888] border border-[#2a2a2a] hover:border-[#800020] hover:bg-[#800020]/5 hover:text-[#e8e4dc] transition-all cursor-help flex items-center justify-center gap-2">
                         {TOOL_ICONS[tool.name]}
                         {tool.name}
                         <Info className="w-3 h-3 text-[#444] group-hover:text-[#800020] transition-colors" />
@@ -1169,14 +1170,25 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-8 print:col-span-8 space-y-6 print:space-y-4">
-          {/* Summary */}
-          <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-4 print:mb-3 flex items-center gap-3 text-[#e8e4dc]"><User className="w-6 h-6" /> 자기소개</h3>
-            <div className="text-[#888] print:text-[13px] print:leading-relaxed leading-relaxed font-medium">
-              <EditableText value={data.summary} onSave={(v) => setData({...data, summary: v})} isEditing={isEditing} markdown={true} />
-            </div>
-          </section>
+        <div className="lg:col-span-8 print:col-span-8">
+          
+          {/* Tabs for Web View */}
+          <div className="flex gap-4 border-b border-[#1e1e1e] mb-8 print:hidden overflow-x-auto whitespace-nowrap">
+            <button onClick={() => setActiveTab('overview')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'overview' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>OVERVIEW</button>
+            <button onClick={() => setActiveTab('experience')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'experience' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>EXPERIENCE</button>
+            <button onClick={() => setActiveTab('coverletter')} className={`pb-4 px-2 text-sm font-bold tracking-widest uppercase border-b-2 transition-all ${activeTab === 'coverletter' ? 'text-[#e8e4dc] border-[#800020]' : 'text-[#555] border-transparent hover:text-[#888]'}`}>COVER LETTER</button>
+          </div>
+
+          <div className="space-y-6 print:space-y-4">
+            {/* TAB: OVERVIEW */}
+            <div className={`space-y-6 print:space-y-4 ${activeTab === 'overview' ? 'block' : 'hidden print:block'}`}>
+              {/* Summary */}
+              <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
+                <h3 className="text-xl font-bold mb-4 print:mb-3 flex items-center gap-3 text-[#e8e4dc]"><User className="w-6 h-6" /> 자기소개</h3>
+                <div className="text-[#888] print:text-[13px] print:leading-relaxed leading-relaxed font-medium">
+                  <EditableText value={data.summary} onSave={(v) => setData({...data, summary: v})} isEditing={isEditing} markdown={true} />
+                </div>
+              </section>
 
           {/* Education */}
           <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
@@ -1203,7 +1215,25 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
               ))}
             </div>
           </section>
+          
+          {/* Awards */}
+          <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
+            <h3 className="text-xl font-bold mb-6 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Award className="text-[#800020] w-6 h-6" /> 자격 및 수상</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-3">
+              {data.awards.map((award, idx) => (
+                <div key={idx} className="p-5 bg-[#1a1a1a] rounded-2xl border-l-4 border-l-[#800020]">
+                  <h4 className="font-bold text-sm mb-1 text-[#e8e4dc]">
+                    <EditableText value={award.title} onSave={(v) => { const a = [...data.awards]; a[idx].title = v; setData({...data, awards: a}); }} isEditing={isEditing} />
+                  </h4>
+                  <p className="text-xs text-[#888]">{award.organization} // {award.year}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
 
+        {/* TAB: EXPERIENCE */}
+        <div className={activeTab === 'experience' ? 'block print:mt-12' : 'hidden print:block print:mt-12'}>
           {/* Experience */}
           <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
             <h3 className="text-xl font-bold mb-6 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Briefcase className="text-[#800020] w-6 h-6" /> 프로젝트 경험</h3>
@@ -1229,30 +1259,15 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
               ))}
             </div>
           </section>
-
-          {/* Awards */}
-          <section className="bg-[#111] rounded-3xl p-6 lg:p-8 print:p-6 shadow-sm border border-[#1e1e1e]">
-            <h3 className="text-xl font-bold mb-6 print:mb-4 flex items-center gap-3 text-[#e8e4dc]"><Award className="text-[#800020] w-6 h-6" /> 자격 및 수상</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-3">
-              {data.awards.map((award, idx) => (
-                <div key={idx} className="p-5 bg-[#1a1a1a] rounded-2xl border-l-4 border-l-[#800020]">
-                  <h4 className="font-bold text-sm mb-1 text-[#e8e4dc]">
-                    <EditableText value={award.title} onSave={(v) => { const a = [...data.awards]; a[idx].title = v; setData({...data, awards: a}); }} isEditing={isEditing} />
-                  </h4>
-                  <p className="text-xs text-[#888]">{award.organization} // {award.year}</p>
-                </div>
-              ))}
-            </div>
-          </section>
         </div>
-      </div>
 
-      {/* Self Introduction */}
-      <div className="mt-16 pt-16 border-t border-[#1e1e1e] print:break-before-page print:mt-4 print:pt-4 print:border-none">
-        <div className="flex flex-col gap-2 mb-10 print:mb-6">
-          <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.25em] font-bold">Cover Letter</span>
-          <h3 className="text-3xl md:text-4xl font-display font-bold text-[#e8e4dc] tracking-[-0.02em]">자기소개서</h3>
-        </div>
+        {/* TAB: COVER LETTER */}
+        <div className={activeTab === 'coverletter' ? 'block print:break-before-page' : 'hidden print:block print:break-before-page'}>
+          {/* Self Introduction */}
+          <div className="flex flex-col gap-2 mb-10 print:mb-6">
+            <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.25em] font-bold">Cover Letter</span>
+            <h3 className="text-3xl md:text-4xl font-display font-bold text-[#e8e4dc] tracking-[-0.02em]">자기소개서</h3>
+          </div>
         
         {data.selfIntroductions ? (
           <div className="flex flex-col gap-10">
@@ -1297,7 +1312,10 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
             )}
           </div>
         )}
-      </div>
+        </div> {/* TAB: COVER LETTER */}
+        </div> {/* space-y-6 */}
+      </div> {/* Main Content */}
+      </div> {/* Grid */}
     </motion.section>
   );
 };
