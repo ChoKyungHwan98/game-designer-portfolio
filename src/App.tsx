@@ -17,8 +17,7 @@ import {
   Code2, 
   ExternalLink, 
   Mail, 
-  Github, 
-  Linkedin,
+  Phone,
   ChevronRight,
   Terminal,
   Zap,
@@ -83,8 +82,7 @@ interface ResumeData {
   name: string;
   role: string;
   email: string;
-  linkedin: string;
-  github: string;
+  phone: string;
   summary: string;
   selfIntroduction?: string;
   selfIntroductions?: {
@@ -136,8 +134,7 @@ const RESUME_DATA: ResumeData = {
   name: "조경환",
   role: "Game Designer",
   email: "kh980624@naver.com",
-  linkedin: "linkedin.com/in/kyunghwan-jo",
-  github: "github.com/kh980624",
+  phone: "010-0000-0000",
   summary: "플레이어의 경험을 설계하고 논리적인 시스템으로 구현하는 게임 기획자입니다. 데이터 기반의 밸런싱과 치밀한 레벨 디자인을 통해 게임의 재미를 극대화하며, 명확한 문서화로 개발팀과의 원활한 협업을 이끌어냅니다.",
   selfIntroductions: [
     {
@@ -1028,16 +1025,16 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
               <EditableText value={data.role} onSave={(v) => setData({...data, role: v})} isEditing={isEditing} />
             </p>
             <div className="space-y-4 text-sm text-[#888] font-medium">
-              {[
-                { icon: <Mail className="w-4 h-4" />, field: 'email' },
-                { icon: <Linkedin className="w-4 h-4" />, field: 'linkedin' },
-                { icon: <Github className="w-4 h-4" />, field: 'github' },
-              ].map(({ icon, field }) => (
-                <div key={field} className="flex items-center gap-4 justify-center lg:justify-start">
-                  <div className="w-10 h-10 bg-[#1a1a1a] rounded-xl flex items-center justify-center text-[#888] border border-[#2a2a2a]">{icon}</div>
-                  <span><EditableText value={(data as any)[field]} onSave={(v) => setData({...data, [field]: v})} isEditing={isEditing} /></span>
-                </div>
-              ))}
+              {/* 이메일 — 항상 표시 */}
+              <div className="flex items-center gap-4 justify-center lg:justify-start">
+                <div className="w-10 h-10 bg-[#1a1a1a] rounded-xl flex items-center justify-center text-[#888] border border-[#2a2a2a]"><Mail className="w-4 h-4" /></div>
+                <span><EditableText value={data.email} onSave={(v) => setData({...data, email: v})} isEditing={isEditing} /></span>
+              </div>
+              {/* 전화번호 — PDF 다운로드(인쇄) 시에만 표시 */}
+              <div className="hidden print:flex items-center gap-4 justify-center lg:justify-start">
+                <div className="w-10 h-10 bg-[#1a1a1a] rounded-xl flex items-center justify-center text-[#888] border border-[#2a2a2a] print:border-gray-200"><Phone className="w-4 h-4" /></div>
+                <span><EditableText value={data.phone} onSave={(v) => setData({...data, phone: v})} isEditing={isEditing} /></span>
+              </div>
             </div>
           </div>
 
