@@ -633,9 +633,6 @@ const Navbar = ({ setView, currentView, onNavClick, isEditing, setIsEditing, act
 const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent, aboutContent, setAboutContent }: { onPortfolioClick: () => void, onResumeClick: () => void, isEditing: boolean, content: any, setContent: (c: any) => void, aboutContent: any, setAboutContent: (c: any) => void }) => (
   <section id="hero" className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 py-[120px] overflow-hidden bg-[#FDFDFB] border-b border-black/10">
     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-    <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 font-display font-black text-black/[0.02] text-[40vw] leading-none pointer-events-none select-none">
-      P.
-    </div>
     
     <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8 mt-12">
       {/* Editorial Left Side - Huge Title & Text */}
@@ -1671,11 +1668,11 @@ const Contact = () => (
       
       <div className="text-center relative z-10 w-full px-6 max-w-4xl mx-auto">
         <span className="text-[#1E3A5F] font-mono text-xs uppercase tracking-[0.4em] font-bold mb-8 block">05. Contact</span>
-        <h2 className="text-4xl md:text-6xl lg:text-[5.5rem] font-display font-black tracking-tighter text-white leading-[1.1] mb-12 drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]">
-          함께 세계를 구축할<br/>준비가 되셨습니까?
+        <h2 className="text-6xl md:text-8xl lg:text-[7rem] font-display font-bold tracking-tighter text-white leading-none mb-12">
+          준비되었습니다.
         </h2>
         <p className="text-zinc-400 text-xl mb-16 max-w-2xl mx-auto font-medium leading-relaxed hidden sm:block">
-          새로운 프로젝트나 협업 제안은 언제나 환영입니다. 당신의 비전을 현실로 만들 기획자가 지금 여기 있습니다.
+          새로운 프로젝트나 협업 제안은 언제나 환영입니다.
         </p>
         
         <a href="mailto:kh980624@naver.com" 
