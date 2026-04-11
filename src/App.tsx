@@ -836,9 +836,9 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
         </div>
 
         {limit ? (
-          <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[640px]">
+          <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[480px]">
             {/* Left: Active Project (Master) */}
-            <motion.div layout className="relative w-full lg:w-[65%] h-[500px] lg:h-full rounded-[2.5rem] overflow-hidden shadow-2xl flex-shrink-0 group cursor-pointer"
+            <motion.div layout className="relative w-full lg:w-[65%] h-[400px] lg:h-full rounded-[2rem] overflow-hidden shadow-2xl flex-shrink-0 group cursor-pointer"
               onClick={() => { const p = displayedProjects.find(p => p.id === actualFeaturedId); if(p) onProjectClick(p); }}>
               <AnimatePresence mode="wait">
                 {displayedProjects.map((project) => project.id === actualFeaturedId && (
@@ -847,14 +847,14 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
                     <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" referrerPolicy="no-referrer" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                     
-                    <div className="absolute bottom-10 left-10 right-10 z-10 flex flex-col items-start gap-5">
+                    <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start gap-4">
                       <div className="flex gap-2">
-                        <span className="bg-white/90 backdrop-blur-sm text-[#2C2C2C] px-4 py-1.5 rounded-full text-[11px] font-bold tracking-tight shadow-sm uppercase">{project.category}</span>
-                        {project.status && <span className="bg-[#800020] text-white px-4 py-1.5 rounded-full text-[11px] font-bold tracking-tight shadow-md shadow-[#800020]/30">{project.status}</span>}
+                        <span className="bg-white/90 backdrop-blur-sm text-[#2C2C2C] px-3 py-1 rounded-full text-[10px] font-bold tracking-tight shadow-sm uppercase">{project.category}</span>
+                        {project.status && <span className="bg-[#800020] text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-tight shadow-md shadow-[#800020]/30">{project.status}</span>}
                       </div>
-                      <h3 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-display font-bold text-white tracking-tight drop-shadow-lg leading-tight line-clamp-2">{project.title}</h3>
-                      <p className="text-white/80 text-base md:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl drop-shadow-md line-clamp-2">{project.description}</p>
-                      <div className="mt-2 px-8 py-4 bg-white/10 hover:bg-white text-white hover:text-[#1A2332] backdrop-blur-md font-bold text-sm tracking-widest transition-all duration-500 rounded-full flex gap-3 items-center uppercase">
+                      <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight drop-shadow-lg leading-tight line-clamp-2">{project.title}</h3>
+                      <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-xl drop-shadow-md line-clamp-2">{project.description}</p>
+                      <div className="mt-2 px-6 py-3 bg-white/10 hover:bg-white text-white hover:text-[#1A2332] backdrop-blur-md font-bold text-xs tracking-widest transition-all duration-500 rounded-full flex gap-2 items-center uppercase border border-white/20">
                         기획서 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
@@ -864,7 +864,7 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
             </motion.div>
 
             {/* Right: Truncated List (Thumbnails) */}
-            <div className="w-full lg:w-[35%] flex flex-col gap-6">
+            <div className="w-full lg:w-[35%] flex flex-col gap-4">
               <AnimatePresence mode="popLayout">
                 {displayedProjects.map((project) => project.id !== actualFeaturedId && (
                   <motion.div 
@@ -875,13 +875,13 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
                     transition={{ duration: 0.4 }}
                     key={project.id} 
                     onClick={() => setFeaturedId(project.id)}
-                    className="relative flex-1 rounded-[2rem] overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-all duration-500 min-h-[220px] bg-zinc-900"
+                    className="relative flex-1 rounded-[1.5rem] overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-all duration-500 min-h-[120px] bg-zinc-900 border border-black/5"
                   >
                     <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/10 group-hover:bg-black/20 transition-all duration-500" />
-                    <div className="absolute bottom-8 left-8 right-8 z-10 transition-transform duration-500 group-hover:translate-x-2">
-                      <span className="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-3 block">{project.category}</span>
-                      <h3 className="text-2xl lg:text-3xl font-display font-bold text-white tracking-tight drop-shadow-md line-clamp-2">{project.title}</h3>
+                    <div className="absolute bottom-6 left-6 right-6 z-10 transition-transform duration-500 group-hover:translate-x-2">
+                      <span className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-1.5 block">{project.category}</span>
+                      <h3 className="text-lg lg:text-xl font-display font-bold text-white tracking-tight drop-shadow-md line-clamp-2 leading-tight">{project.title}</h3>
                     </div>
                   </motion.div>
                 ))}
@@ -989,56 +989,56 @@ const Skills = ({ isEditing, skills, setSkills }: { isEditing: boolean, skills: 
       <div className="absolute inset-0 pointer-events-none opacity-20 object-cover bg-repeat bg-[size:100px_100px]" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')"}}></div>
       
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col h-full">
-        <div className="mb-24 grid lg:grid-cols-2 gap-12 items-end border-b border-white/10 pb-12">
+        <div className="mb-12 grid lg:grid-cols-2 gap-6 items-end border-b border-white/10 pb-6">
           <div>
             <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-              className="text-[#800020] font-mono text-xs uppercase tracking-[0.3em] font-bold mb-6 block">03. Core Competencies</motion.span>
+              className="text-[#800020] font-mono text-[10px] uppercase tracking-[0.3em] font-bold mb-3 block">03. Core Competencies</motion.span>
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="text-4xl md:text-5xl lg:text-7xl font-display font-bold tracking-[-0.03em] text-white leading-tight">핵심 역량.</motion.h2>
+              className="text-3xl md:text-5xl font-display font-bold tracking-[-0.03em] text-white leading-tight">핵심 역량.</motion.h2>
           </div>
-          <p className="text-zinc-400 text-lg leading-[1.8] lg:text-right font-medium">프로젝트의 성공을 이끄는 실무 중심의 기술적 토대입니다.</p>
+          <p className="text-zinc-400 text-sm leading-[1.6] lg:text-right font-medium">프로젝트의 성공을 이끄는 실무 중심의 기술적 토대입니다.</p>
         </div>
         
-        <div className="flex flex-col w-full flex-1">
+        <div className="flex flex-col w-full flex-1 justify-center">
           {skills.map((skill, idx) => (
             <motion.div key={idx} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-              className="relative group border-b border-white/5 py-12 px-6 lg:px-12 hover:pl-16 transition-all duration-700 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-8 cursor-default">
+              className="relative group border-b border-white/5 py-6 px-6 lg:px-8 hover:pl-12 transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-default">
               
               {/* Giant Background Progress Bar */}
               <motion.div 
                 initial={{ width: 0 }}
                 whileInView={{ width: `${skill.level}%` }}
                 viewport={{ once: true }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                 className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-[#800020]/30 to-[#800020]/10 z-0 origin-left"
               />
-              <div className="absolute top-0 left-0 bottom-0 w-2 bg-[#800020] z-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-out" />
+              <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-[#800020] z-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out" />
 
-              <div className="relative z-10 flex items-center gap-10 md:w-1/2">
-                <div className="text-white/20 group-hover:text-[#800020] transition-all duration-500 transform group-hover:scale-125 mb-auto pt-2 hidden md:block">
+              <div className="relative z-10 flex items-center gap-6 md:w-[45%]">
+                <div className="text-white/20 group-hover:text-[#800020] transition-all duration-500 transform group-hover:scale-110 mb-auto pt-1 hidden md:block">
                   {skill.icon}
                 </div>
                 <div>
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white/90 tracking-tighter uppercase group-hover:text-white transition-colors duration-500 break-keep">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-black text-white/90 tracking-tighter uppercase group-hover:text-white transition-colors duration-300 break-keep">
                     <EditableText value={skill.name} onSave={(v) => { const s = [...skills]; s[idx].name = v; setSkills(s); }} isEditing={isEditing} />
                   </h3>
                 </div>
               </div>
               
-              <div className="relative z-10 md:w-1/3 flex flex-col gap-3 ml-auto md:text-right md:items-end">
-                 <p className="text-lg md:text-xl font-medium text-zinc-400 group-hover:text-white transition-colors duration-500 max-w-sm">
+              <div className="relative z-10 flex-1 flex flex-col gap-1.5 ml-auto md:text-right md:items-end">
+                 <p className="text-sm md:text-base font-medium text-zinc-400 group-hover:text-white transition-colors duration-300 max-w-sm line-clamp-1">
                    <EditableText value={skill.caption || ""} onSave={(v) => { const s = [...skills]; s[idx].caption = v; setSkills(s); }} isEditing={isEditing} />
                  </p>
-                 <div className="flex items-center md:flex-row-reverse gap-4 mt-2">
-                    <span className="text-xs font-bold text-zinc-500 tracking-[0.2em] uppercase">Proficiency</span>
-                    <span className="text-[#800020] group-hover:text-white font-bold font-mono text-xl transition-colors">{skill.level}%</span>
+                 <div className="flex items-center md:flex-row-reverse gap-3">
+                    <span className="text-[10px] font-bold text-zinc-500 tracking-[0.2em] uppercase">Proficiency</span>
+                    <span className="text-[#800020] group-hover:text-white font-bold font-mono text-base transition-colors">{skill.level}%</span>
                  </div>
               </div>
 
               {isEditing && (
                 <button onClick={() => { const s = [...skills]; s.splice(idx, 1); setSkills(s); }}
-                  className="absolute top-1/2 -translate-y-1/2 right-4 p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-sm z-20" title="삭제">
-                  <X className="w-5 h-5" />
+                  className="absolute top-1/2 -translate-y-1/2 right-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-sm z-20" title="삭제">
+                  <X className="w-4 h-4" />
                 </button>
               )}
             </motion.div>
@@ -1056,66 +1056,49 @@ const PlayHistory = ({ isEditing, history, setHistory, onViewAll }: { isEditing:
   const renderDashboardRow = (title: string, icon: React.ReactNode, dataKey: keyof GameHistory) => {
     const items = history[dataKey] || [];
     return (
-      <div className="mb-14 bg-white border border-black/5 rounded-[2.5rem] p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-500 group/board">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-6 border-b-2 border-black/5 group-hover/board:border-black/10 transition-colors">
-          <div className="flex items-center gap-5 text-[#2C2C2C]">
-            <div className="w-14 h-14 bg-zinc-50 rounded-2xl flex items-center justify-center text-[#2C2C2C] border border-black/5 group-hover/board:bg-[#800020] group-hover/board:text-white transition-colors duration-500 shadow-sm shrink-0">
-              {icon}
-            </div>
-            <span className="font-display font-bold tracking-tight text-2xl md:text-3xl">{title}</span>
+      <div className="flex flex-col bg-white border border-black/5 rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-500 group/board min-h-[320px]">
+        <div className="flex flex-col mb-4 pb-4 border-b border-black/5 group-hover/board:border-black/10 transition-colors">
+          <div className="flex items-center gap-3 text-[#2C2C2C] mb-2">
+             <div className="w-10 h-10 bg-zinc-50 rounded-xl flex items-center justify-center text-[#2C2C2C] border border-black/5 group-hover/board:bg-[#800020] group-hover/board:text-white transition-colors duration-300 shadow-sm shrink-0">
+               {icon}
+             </div>
+             <span className="font-display font-bold tracking-tight text-xl">{title}</span>
           </div>
-          <div className="mt-4 sm:mt-0 flex items-center gap-4">
-             <span className="px-4 py-2 bg-zinc-100 rounded-xl font-mono text-sm font-bold text-[#800020] flex items-center gap-2">
-               <span className="w-2 h-2 rounded-full bg-[#800020] animate-pulse"></span> {items.length} TITLES
-             </span>
+          <div className="flex items-center justify-between">
+             <span className="px-3 py-1 bg-zinc-100 rounded-lg font-mono text-xs font-bold text-[#800020]">{items.length} TITLES</span>
              {isEditing && (
               <button onClick={() => { const h = {...history}; h[dataKey].push({ id: Date.now().toString(), name: "새 항목", hours: 0 }); setHistory(h); }}
-                className="w-10 h-10 flex items-center justify-center bg-black/5 hover:bg-black/10 transition-colors rounded-full" title="항목 추가">
-                <Plus className="w-4 h-4" />
+                className="w-8 h-8 flex items-center justify-center bg-black/5 hover:bg-black/10 transition-colors rounded-full text-xs" title="항목 추가">
+                <Plus className="w-3 h-3" />
               </button>
             )}
           </div>
         </div>
         
-        <div className="flex flex-col gap-1">
-          {items.slice(0, 5).map((game, idx) => (
-            <div key={game.id} className="group flex flex-col md:flex-row md:items-center justify-between p-4 px-6 hover:bg-[#FDFDFB] rounded-2xl transition-colors cursor-default border border-transparent hover:border-black/5 w-full relative overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#800020] rounded-r-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
+        <div className="flex flex-col gap-1 flex-1">
+          {items.slice(0, 3).map((game, idx) => (
+            <div key={game.id} className="group relative flex flex-col p-3 hover:bg-[#FDFDFB] rounded-xl transition-colors cursor-default border border-transparent hover:border-black/5 flex-1 justify-center max-h-[64px]">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 bottom-auto h-3/4 w-1 bg-[#800020] rounded-r-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
               
-              <div className="flex items-center gap-5 w-full md:w-auto mb-3 md:mb-0">
-                <span className="text-[#800020] font-mono text-sm font-bold opacity-30 group-hover:opacity-100 transition-opacity w-5 shrink-0">{(idx+1).toString().padStart(2, '0')}</span>
-                <div className="flex-1 min-w-0">
-                   <h4 className="font-bold text-lg text-[#2C2C2C] group-hover:text-[#800020] transition-colors truncate">
-                     <EditableText value={game.title || ""} onSave={(v) => { const h = {...history}; h[dataKey][idx].title = v; setHistory(h); }} isEditing={isEditing} />
-                   </h4>
-                   <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest leading-none block mt-1">{game.genre}</span>
-                </div>
+              <div className="flex items-center justify-between mb-1 pl-2">
+                 <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest leading-none">{game.genre}</span>
+                 {game.playTime && (
+                    <span className="font-mono text-[10px] text-[#800020] font-bold leading-none">{game.playTime}</span>
+                 )}
               </div>
-              
-              <div className="flex items-center gap-8 md:text-right pl-10 md:pl-0">
-                <div className="text-left md:text-right w-24">
-                  <span className="block text-[9px] font-bold text-zinc-400 uppercase tracking-widest mb-0.5">Platform</span>
-                  <span className="font-mono text-xs text-[#2C2C2C] font-bold truncate block">
-                    <EditableText value={game.platform || ""} onSave={(v) => { const h = {...history}; h[dataKey][idx].platform = v; setHistory(h); }} isEditing={isEditing} />
-                  </span>
-                </div>
-                {game.playTime && (
-                  <div className="text-left md:text-right w-20">
-                    <span className="block text-[9px] font-bold text-[#800020]/70 uppercase tracking-widest mb-0.5">Playtime</span>
-                    <span className="font-mono text-xs text-[#800020] font-bold truncate block">{game.playTime}</span>
-                  </div>
-                )}
-                {isEditing && (
-                  <button onClick={() => { const h = {...history}; h[dataKey].splice(idx, 1); setHistory(h); }} className="text-zinc-300 hover:text-red-500 transition-colors ml-2 shrink-0">
-                    <X className="w-4 h-4" />
+              <h4 className="font-bold text-sm text-[#2C2C2C] group-hover:text-[#800020] transition-colors truncate pl-2">
+                 <EditableText value={game.title || ""} onSave={(v) => { const h = {...history}; h[dataKey][idx].title = v; setHistory(h); }} isEditing={isEditing} />
+              </h4>
+               {isEditing && (
+                  <button onClick={() => { const h = {...history}; h[dataKey].splice(idx, 1); setHistory(h); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-300 hover:text-red-500 transition-colors bg-white rounded-full p-1 shadow-sm">
+                    <X className="w-3 h-3" />
                   </button>
                 )}
-              </div>
             </div>
           ))}
-          {items.length > 5 && !isEditing && (
-            <div className="text-center pt-6 mt-4 border-t border-dashed border-black/10">
-              <span className="text-[11px] font-bold text-zinc-400 tracking-widest uppercase">+ {items.length - 5} More Games in Portfolio View</span>
+          {items.length > 3 && !isEditing && (
+            <div className="text-center pt-3 mt-auto border-t border-dashed border-black/10">
+              <span className="text-[10px] font-bold text-zinc-400 tracking-widest uppercase">+ {items.length - 3} More</span>
             </div>
           )}
         </div>
@@ -1124,43 +1107,40 @@ const PlayHistory = ({ isEditing, history, setHistory, onViewAll }: { isEditing:
   };
 
   return (
-    <section id="play-history" className="scroll-mt-20 py-[120px] px-6 md:px-12 relative min-h-screen flex items-center bg-[#F6F6F3] overflow-hidden border-t border-black/5">
-      <div className="max-w-7xl mx-auto w-full relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+    <section id="play-history" className="scroll-mt-20 py-[120px] px-6 md:px-12 relative min-h-screen flex flex-col justify-center bg-[#F6F6F3] overflow-hidden border-t border-black/5">
+      <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col h-full">
         
-        {/* Left: Dashboard Stats */}
-        <div className="lg:col-span-4 lg:sticky lg:top-40 bg-[#1A1A1A] text-white rounded-[3rem] p-10 lg:p-12 shadow-2xl flex flex-col justify-between overflow-hidden relative min-h-[500px]">
-          {/* subtle background graphic */}
-          <div className="absolute -right-20 -bottom-20 w-64 h-64 border-[40px] border-white/5 rounded-full pointer-events-none"></div>
-          
-          <div>
-            <span className="text-[#800020] font-mono text-xs uppercase tracking-[0.3em] font-bold mb-6 block drop-shadow-md">04. Statistics</span>
-            <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-[-0.03em] leading-tight mb-12 break-keep">플레이<br />통계.</h2>
-            
-            <div className="grid gap-6 mb-12">
-               <div className="bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-md">
-                  <span className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-3 flex items-center gap-2"><Gamepad2 className="w-3 h-3" /> Total Games Analyzed</span>
-                  <span className="text-5xl font-display font-bold text-white tracking-tighter">{allGames.length}</span>
+        {/* Top: Horizontal Dashboard Stats */}
+        <div className="bg-[#1A1A1A] text-white rounded-3xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 w-full border border-black/5">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <h2 className="text-3xl md:text-4xl font-display font-bold tracking-[-0.03em] leading-tight break-keep text-center sm:text-left">플레이 통계.</h2>
+            <div className="w-px h-12 bg-white/20 hidden sm:block"></div>
+            <div className="flex items-center gap-4 bg-white/10 px-5 py-3 rounded-2xl backdrop-blur-md">
+               <Gamepad2 className="w-5 h-5 text-[#800020]" />
+               <div>
+                  <span className="block text-[9px] font-bold text-zinc-400 uppercase tracking-widest leading-none mb-1">Total Analyzed</span>
+                  <span className="text-2xl font-display font-bold text-white tracking-tight leading-none">{allGames.length}</span>
                </div>
-               
-               <p className="text-zinc-400 font-medium leading-[1.8] text-sm mt-4">
-                 다양한 플랫폼 및 장르 분석을 통해 트렌디한 감각과 심층적인 레벨 디자인 설계 능력을 검증합니다.
-               </p>
             </div>
+          </div>
+          
+          <div className="flex-1 max-w-sm text-zinc-400 font-medium text-[13px] leading-relaxed hidden lg:block text-center md:text-left">
+             다양한 플랫폼 및 장르 분석을 통해 트렌디한 감각과 심층적인 레벨 디자인 설계 능력을 검증합니다.
           </div>
 
           {!isEditing && (
             <button onClick={onViewAll}
-              className="mt-auto w-full py-6 bg-white shrink-0 text-[#1A1A1A] rounded-2xl font-bold tracking-widest text-xs uppercase hover:bg-[#800020] hover:text-white transition-all duration-300 shadow-md flex justify-center items-center gap-3 group">
-              전체 플레이 이력 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              className="w-full md:w-auto py-3 px-6 bg-white text-[#1A1A1A] rounded-xl font-bold tracking-widest text-xs uppercase hover:bg-[#800020] hover:text-white transition-all duration-300 shadow-md flex items-center justify-center gap-3 shrink-0">
+              전체 목록 보기 <ArrowRight className="w-4 h-4" />
             </button>
           )}
         </div>
         
-        {/* Right: Data Rows */}
-        <div className="lg:col-span-8">
-          {renderDashboardRow("PC / Mainline", <Monitor className="w-7 h-7" />, "pc")}
-          {renderDashboardRow("Console / Package", <Gamepad2 className="w-7 h-7" />, "console")}
-          {renderDashboardRow("Mobile / Portable", <Smartphone className="w-7 h-7" />, "mobile")}
+        {/* Bottom: Horizontal Category Grids */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 shrink-0">
+          {renderDashboardRow("PC / Mainline", <Monitor className="w-6 h-6" />, "pc")}
+          {renderDashboardRow("Console", <Gamepad2 className="w-6 h-6" />, "console")}
+          {renderDashboardRow("Mobile", <Smartphone className="w-6 h-6" />, "mobile")}
         </div>
       </div>
     </section>
