@@ -1141,21 +1141,39 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
   const handleDownload = async () => {
     if (!printRef.current || isGeneratingPdf) return;
     setIsGeneratingPdf(true);
+    
+    const element = printRef.current;
+    const origLeft = element.style.left;
+    const origTop = element.style.top;
+    const origZIndex = element.style.zIndex;
+    const origPosition = element.style.position;
+
+    // Temporarily bring the element to viewport but behind everything to ensure it renders with proper height
+    element.style.position = 'absolute';
+    element.style.left = '0px';
+    element.style.top = '0px';
+    element.style.zIndex = '-9999';
+    element.style.visibility = 'visible';
+
     try {
-      const element = printRef.current;
       const opt = {
-        margin: 8,
+        margin: [0, 0, 0, 0], // use internal paddings
         filename: `${data.name || '이력서'}_이력서.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-        pagebreak: { mode: ['css', 'legacy'] }
+        pagebreak: { mode: 'css' }
       };
       await html2pdf().set(opt).from(element).save();
     } catch (err) {
       console.error('PDF generation failed:', err);
       alert('PDF 생성에 실패했습니다. 다시 시도해 주세요.');
     } finally {
+      // Revert styles
+      element.style.position = origPosition;
+      element.style.left = origLeft;
+      element.style.top = origTop;
+      element.style.zIndex = origZIndex;
       setIsGeneratingPdf(false);
     }
   };
@@ -1398,10 +1416,10 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
     </motion.section>
 
     {/* Off-screen PDF source (html2pdf.js captures this) */}
-    <div ref={printRef} style={{ position: 'absolute', left: '-9999px', top: 0, width: '210mm', background: '#fff', color: '#000', fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif", fontSize: '12px', lineHeight: '1.6' }}>
+    <div ref={printRef} style={{ position: 'absolute', left: '-99999px', top: 0, width: '210mm', background: '#fff', color: '#000', fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif", fontSize: '12px', lineHeight: '1.6' }}>
       
       {/* Page 1 */}
-      <div style={{ padding: '28px 32px 16px' }}>
+      <div style={{ padding: '28px 32px 16px', minHeight: '290mm' }}>
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '2px solid #000', paddingBottom: '14px', marginBottom: '20px' }}>
           <div>
@@ -1484,7 +1502,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
       </div>
 
       {/* Page 2+: Cover Letter */}
-      <div style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '16px' }}>
+      <div style={{ pageBreakBefore: 'always', padding: '28px 32px 16px' }}>
         <h3 style={{ fontSize: '18px', fontWeight: 900, borderBottom: '2px solid #000', paddingBottom: '8px', marginBottom: '20px' }}>자기소개서</h3>
         {data.selfIntroductions?.map((intro, idx) => (
           <div key={idx} style={{ marginBottom: '22px' }}>
