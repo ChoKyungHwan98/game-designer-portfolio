@@ -632,7 +632,10 @@ const Navbar = ({ setView, currentView, onNavClick, isEditing, setIsEditing, act
 // --- Hero ---
 const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent, aboutContent, setAboutContent }: { onPortfolioClick: () => void, onResumeClick: () => void, isEditing: boolean, content: any, setContent: (c: any) => void, aboutContent: any, setAboutContent: (c: any) => void }) => (
   <section id="hero" className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 py-[120px] overflow-hidden bg-[#FDFDFB] border-b border-black/10">
-    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+    <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 font-display font-black text-black/[0.02] text-[40vw] leading-none pointer-events-none select-none">
+      P.
+    </div>
     
     <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-8 mt-12">
       {/* Editorial Left Side - Huge Title & Text */}
@@ -1002,15 +1005,17 @@ const Skills = ({ isEditing, skills, setSkills }: { isEditing: boolean, skills: 
             <motion.div key={idx} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
               className="relative group border-b border-black/5 py-5 px-4 md:px-8 hover:pl-10 lg:hover:pl-12 transition-all duration-500 overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-default">
               
-              {/* Subtle Background Progress Bar */}
+              {/* Gamified Background Progress Bar with Neon Hatch */}
               <motion.div 
                 initial={{ width: 0 }}
                 whileInView={{ width: `${skill.level}%` }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-[#1E3A5F]/10 to-transparent z-0 origin-left"
-              />
-              <div className="absolute top-0 left-0 bottom-0 w-1 bg-[#1E3A5F] z-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out" />
+                className="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-[#1E3A5F]/10 to-[#1E3A5F]/5 z-0 origin-left flex items-center overflow-hidden"
+              >
+                <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,rgba(0,0,0,1)_25%,transparent_25%,transparent_50%,rgba(0,0,0,1)_50%,rgba(0,0,0,1)_75%,transparent_75%,transparent)] bg-[length:20px_20px] animate-bg-pan"></div>
+              </motion.div>
+              <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-[#3B82F6] to-[#1E3A5F] z-0 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
 
               <div className="relative z-10 flex items-center gap-6 md:w-[45%]">
                 <div className="text-black/10 group-hover:text-[#1E3A5F] transition-all duration-500 transform group-hover:scale-110 mb-auto pt-1 hidden md:block">
@@ -1075,16 +1080,17 @@ const PlayHistory = ({ isEditing, history, setHistory, onViewAll }: { isEditing:
         
         <div className="flex flex-col gap-1 flex-1">
           {items.slice(0, 3).map((game, idx) => (
-            <div key={game.id} className="group relative flex flex-col p-3 hover:bg-[#FDFDFB] rounded-xl transition-colors cursor-default border border-transparent hover:border-black/5 flex-1 justify-center max-h-[64px]">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 bottom-auto h-3/4 w-1 bg-[#1E3A5F] rounded-r-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
+            <div key={game.id} className="group relative flex flex-col p-3 hover:bg-black/80 hover:shadow-2xl rounded-xl transition-all duration-500 cursor-default border border-transparent hover:border-[#3B82F6]/30 flex-1 justify-center max-h-[64px] overflow-hidden">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700 bg-[url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay pointer-events-none"></div>
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 bottom-auto h-full w-1 bg-[#3B82F6] scale-y-0 group-hover:scale-y-100 transition-transform duration-300 shadow-[0_0_15px_rgba(59,130,246,0.8)] z-10"></div>
               
-              <div className="flex items-center justify-between mb-1 pl-2">
-                 <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest leading-none">{game.genre}</span>
+              <div className="flex items-center justify-between mb-1 pl-2 relative z-10">
+                 <span className="text-[9px] font-bold text-zinc-500 group-hover:text-zinc-400 uppercase tracking-widest leading-none transition-colors">{game.genre}</span>
                  {game.playTime && (
-                    <span className="font-mono text-[10px] text-[#1E3A5F] font-bold leading-none">{game.playTime}</span>
+                    <span className="font-mono text-[10px] text-[#1E3A5F] group-hover:text-[#3B82F6] font-bold leading-none transition-colors">{game.playTime}</span>
                  )}
               </div>
-              <h4 className="font-bold text-sm text-[#2C2C2C] group-hover:text-[#1E3A5F] transition-colors truncate pl-2">
+              <h4 className="font-bold text-sm text-[#2C2C2C] group-hover:text-white transition-colors truncate pl-2 relative z-10">
                  <EditableText value={game.title || ""} onSave={(v) => { const h = {...history}; h[dataKey][idx].title = v; setHistory(h); }} isEditing={isEditing} />
               </h4>
                {isEditing && (
@@ -1665,11 +1671,11 @@ const Contact = () => (
       
       <div className="text-center relative z-10 w-full px-6 max-w-4xl mx-auto">
         <span className="text-[#1E3A5F] font-mono text-xs uppercase tracking-[0.4em] font-bold mb-8 block">05. Contact</span>
-        <h2 className="text-6xl md:text-8xl lg:text-[7rem] font-display font-bold tracking-tighter text-white leading-none mb-12">
-          준비되었습니다.
+        <h2 className="text-4xl md:text-6xl lg:text-[5.5rem] font-display font-black tracking-tighter text-white leading-[1.1] mb-12 drop-shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+          함께 세계를 구축할<br/>준비가 되셨습니까?
         </h2>
         <p className="text-zinc-400 text-xl mb-16 max-w-2xl mx-auto font-medium leading-relaxed hidden sm:block">
-          새로운 프로젝트나 협업 제안은 언제나 환영입니다.
+          새로운 프로젝트나 협업 제안은 언제나 환영입니다. 당신의 비전을 현실로 만들 기획자가 지금 여기 있습니다.
         </p>
         
         <a href="mailto:kh980624@naver.com" 

@@ -87,7 +87,7 @@
     transform: translateX(-50%);
     width: 60%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(128, 0, 32, 0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(30, 58, 95, 0.15), transparent);
   }
 
   /* --- Button System (Light) --- */
@@ -224,4 +224,19 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(128, 0, 32, 0.5);
+}
+
+@layer utilities {
+  .animate-bg-pan {
+    animation: bg-pan 3s linear infinite;
+  }
+}
+
+@keyframes bg-pan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 40px 0;
+  }
 }
