@@ -1144,12 +1144,12 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
     try {
       const element = printRef.current;
       const opt = {
-        margin: [8, 8, 8, 8],
+        margin: 8,
         filename: `${data.name || '이력서'}_이력서.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.pdf-page-break' }
+        pagebreak: { mode: ['css', 'legacy'] }
       };
       await html2pdf().set(opt).from(element).save();
     } catch (err) {
@@ -1252,6 +1252,48 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         </div>
       </div>
 
+      {/* ===== COVER LETTER CTA (White + Burgundy, Positioned Top) ===== */}
+      <motion.div 
+        whileHover={{ y: -2 }}
+        onClick={() => setView('cover-letter')}
+        className="group relative bg-white dark:bg-[#111] rounded-3xl p-6 lg:p-8 shadow-sm border border-black/5 dark:border-[#1e1e1e] cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md hover:border-[#800020]/30 mb-8"
+      >
+        <div className="absolute top-0 left-0 bottom-0 w-1.5 bg-gradient-to-b from-[#800020] to-[#500014] opacity-80 group-hover:opacity-100 transition-opacity"></div>
+        
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-5 md:gap-8 ml-2">
+          {/* Left: Icon & Label */}
+          <div className="flex items-center gap-4 shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-zinc-50 dark:bg-[#1a1a1a] border border-black/5 dark:border-[#2a2a2a] flex items-center justify-center group-hover:bg-[#800020]/5 transition-colors">
+              <ScrollText className="w-5 h-5 text-[#800020]" />
+            </div>
+            <div className="md:hidden">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#800020] block mb-0.5">COVER LETTER</span>
+              <span className="text-[11px] font-medium text-zinc-500 dark:text-[#888]">총 {data.selfIntroductions?.length || 0}개의 항목</span>
+            </div>
+          </div>
+
+          {/* Center: First logline teaser */}
+          <div className="flex-1 min-w-0">
+            <div className="hidden md:flex items-center gap-2 mb-1.5">
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#800020]">COVER LETTER</span>
+              <span className="w-1 h-1 rounded-full bg-black/20 dark:bg-white/20"></span>
+              <span className="text-[11px] font-medium text-zinc-500 dark:text-[#888]">총 {data.selfIntroductions?.length || 0}개의 항목</span>
+            </div>
+            <h3 className="text-lg md:text-[22px] font-bold text-[#2C2C2C] dark:text-[#e8e4dc] tracking-tight leading-snug group-hover:text-[#800020] transition-colors line-clamp-2">
+              "{data.selfIntroductions?.[0]?.logline || '자기소개서를 확인해주세요.'}"
+            </h3>
+          </div>
+
+          {/* Right: Arrow */}
+          <div className="flex items-center gap-2 shrink-0 self-end md:self-center mt-2 md:mt-0">
+            <span className="text-sm font-bold text-[#800020] transition-colors hidden sm:block">전문 읽기</span>
+            <div className="w-8 h-8 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
+              <ArrowRight className="w-5 h-5 text-[#800020]" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
       {/* ===== TWO-COLUMN BODY (Education+Awards LEFT | Experience RIGHT) ===== */}
       <div className="grid lg:grid-cols-12 gap-8 mb-8">
 
@@ -1351,47 +1393,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
         </div>
       </div>
 
-      {/* ===== COVER LETTER CTA - Premium Teaser Card ===== */}
-      <motion.div 
-        whileHover={{ y: -4 }}
-        onClick={() => setView('cover-letter')}
-        className="group relative bg-gradient-to-br from-[#2C2C2C] to-[#1a1a1a] dark:from-[#111] dark:to-[#0a0a0a] rounded-3xl p-8 lg:p-10 shadow-lg border border-black/5 dark:border-[#1e1e1e] cursor-pointer overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-[#800020]/10"
-      >
-        {/* Background decorative element */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#800020]/5 rounded-full blur-[80px] group-hover:bg-[#800020]/10 transition-colors duration-700"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#800020]/3 rounded-full blur-[60px]"></div>
-        
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-10">
-          {/* Left: Icon & Label */}
-          <div className="flex items-center gap-4 shrink-0">
-            <div className="w-14 h-14 rounded-2xl bg-[#800020]/10 border border-[#800020]/20 flex items-center justify-center group-hover:bg-[#800020] group-hover:border-[#800020] transition-all duration-500">
-              <ScrollText className="w-6 h-6 text-[#800020] group-hover:text-white transition-colors duration-500" />
-            </div>
-            <div>
-              <span className="text-[10px] font-mono tracking-widest uppercase text-[#800020] font-bold block mb-1">COVER LETTER</span>
-              <h3 className="text-xl font-bold text-white tracking-tight">자기소개서</h3>
-            </div>
-          </div>
 
-          {/* Center: First logline teaser */}
-          <div className="flex-1 min-w-0">
-            <p className="text-zinc-400 text-sm leading-relaxed line-clamp-2 italic">
-              "{data.selfIntroductions?.[0]?.logline || '자기소개서를 확인해주세요.'}"
-            </p>
-            <p className="text-zinc-600 text-xs mt-2">
-              총 {data.selfIntroductions?.length || 0}개의 자기소개 항목
-            </p>
-          </div>
-
-          {/* Right: Arrow */}
-          <div className="flex items-center gap-3 shrink-0">
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest group-hover:text-[#800020] transition-colors hidden sm:block">전문 읽기</span>
-            <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[#800020] group-hover:border-[#800020] transition-all duration-500">
-              <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-300" />
-            </div>
-          </div>
-        </div>
-      </motion.div>
 
     </motion.section>
 
@@ -1482,7 +1484,7 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
       </div>
 
       {/* Page 2+: Cover Letter */}
-      <div className="pdf-page-break" style={{ padding: '28px 32px 16px' }}>
+      <div style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '16px' }}>
         <h3 style={{ fontSize: '18px', fontWeight: 900, borderBottom: '2px solid #000', paddingBottom: '8px', marginBottom: '20px' }}>자기소개서</h3>
         {data.selfIntroductions?.map((intro, idx) => (
           <div key={idx} style={{ marginBottom: '22px' }}>
