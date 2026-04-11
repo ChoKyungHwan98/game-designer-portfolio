@@ -630,7 +630,7 @@ const Navbar = ({ setView, currentView, onNavClick, isEditing, setIsEditing, act
 };
 
 // --- Hero ---
-const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent }: { onPortfolioClick: () => void, onResumeClick: () => void, isEditing: boolean, content: any, setContent: (c: any) => void }) => (
+const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent, aboutContent, setAboutContent }: { onPortfolioClick: () => void, onResumeClick: () => void, isEditing: boolean, content: any, setContent: (c: any) => void, aboutContent: any, setAboutContent: (c: any) => void }) => (
   <section id="hero" className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 py-[120px] overflow-hidden bg-[#FDFDFB] border-b border-black/10">
     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
     
@@ -681,16 +681,16 @@ const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent 
         className="w-full lg:w-[40%] flex flex-col gap-6 relative"
       >
         <div className="absolute -inset-10 bg-gradient-to-tr from-[#800020]/5 to-transparent blur-3xl rounded-full z-0 pointer-events-none" />
-        {content.stats.slice(0, 3).map((stat: any, idx: number) => (
+        {aboutContent?.stats?.slice(0, 3).map((stat: any, idx: number) => (
           <div key={idx} className="glass group relative overflow-hidden rounded-[2rem] p-8 flex items-center justify-between gap-4 transition-all duration-500 hover:shadow-[0_8px_30px_rgba(128,0,32,0.1)] hover:-translate-y-1 hover:border-[#800020]/20 z-10 bg-white/70 backdrop-blur-xl">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#800020]/5 to-transparent rounded-bl-full pointer-events-none transition-opacity group-hover:opacity-100 opacity-50" />
             <div className="flex flex-col gap-1 z-10">
               <div className="text-[11px] font-bold text-[#800020] tracking-widest uppercase">
-                <EditableText value={stat.label} onSave={(v) => { const s = [...content.stats]; s[idx].label = v; setContent({...content, stats: s}); }} isEditing={isEditing} />
+                <EditableText value={stat.label} onSave={(v) => { const s = [...aboutContent.stats]; s[idx].label = v; setAboutContent({...aboutContent, stats: s}); }} isEditing={isEditing} />
               </div>
             </div>
             <div className="text-4xl lg:text-5xl font-display font-bold text-[#1A2332] tracking-tighter text-right z-10">
-              <EditableText value={stat.value} onSave={(v) => { const s = [...content.stats]; s[idx].value = v; setContent({...content, stats: s}); }} isEditing={isEditing} />
+              <EditableText value={stat.value} onSave={(v) => { const s = [...aboutContent.stats]; s[idx].value = v; setAboutContent({...aboutContent, stats: s}); }} isEditing={isEditing} />
             </div>
           </div>
         ))}
@@ -2009,7 +2009,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           {view === 'home' && (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <Hero onPortfolioClick={() => changeView('portfolio')} onResumeClick={() => changeView('resume')} isEditing={isEditing} content={heroContent} setContent={setHeroContent} />
+<Hero onPortfolioClick={() => changeView('portfolio')} onResumeClick={() => changeView('resume')} isEditing={isEditing} content={heroContent} setContent={setHeroContent} aboutContent={aboutContent} setAboutContent={setAboutContent} />
               <About isEditing={isEditing} content={aboutContent} setContent={setAboutContent} />
               <Projects onProjectClick={handleProjectClick} isEditing={isEditing} projects={projectsData} setProjects={setProjectsData} limit={3} setView={changeView} />
               <Skills isEditing={isEditing} skills={skillsData} setSkills={setSkillsData} />
