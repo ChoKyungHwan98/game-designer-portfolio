@@ -824,38 +824,50 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
       
       <div className="max-w-7xl mx-auto w-full relative z-10">
-        <div className="text-center mb-20">
-          <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="text-[#800020] font-mono text-xs uppercase tracking-[0.3em] font-bold mb-6 block">02. Projects</motion.span>
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-4xl md:text-5xl lg:text-7xl font-display font-bold tracking-[-0.03em] text-[#2C2C2C] leading-tight mb-8">주요 프로젝트.</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            className="text-zinc-500 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-[1.9]">
-            시스템 기획 및 레벨 디자인, 프로토타입 개발 결과물입니다.
-          </motion.p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6 border-b border-black/5 pb-6">
+          <div>
+            <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              className="text-[#800020] font-mono text-[10px] uppercase tracking-[0.3em] font-bold mb-2 block">02. Selected Works</motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-display font-bold tracking-[-0.03em] text-[#2C2C2C] leading-tight">주요 프로젝트.</motion.h2>
+          </div>
+          <div className="flex flex-col items-start md:items-end gap-3">
+            <motion.p initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+              className="text-zinc-500 text-xs md:text-sm font-medium md:text-right max-w-sm">
+              시스템 기획 및 레벨 디자인, 프로토타입 개발 결과물입니다.
+            </motion.p>
+            {limit && setView && (
+              <button onClick={() => setView('portfolio')}
+                className="group flex items-center gap-2 text-[#800020] font-bold text-xs uppercase tracking-widest hover:text-[#1A1A1A] transition-colors bg-[#800020]/5 px-4 py-2 rounded-full">
+                전체 찾아보기 <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+              </button>
+            )}
+          </div>
         </div>
 
         {limit ? (
-          <div className="flex flex-col lg:flex-row gap-4 h-auto lg:h-[480px]">
+          <div className="flex flex-col lg:flex-row gap-3 h-[420px]">
             {/* Left: Active Project (Master) */}
-            <motion.div layout className="relative w-full lg:w-[65%] h-[400px] lg:h-full rounded-[2rem] overflow-hidden shadow-2xl flex-shrink-0 group cursor-pointer"
+            <motion.div layout className="relative w-full lg:w-[75%] h-full rounded-[1.5rem] overflow-hidden shadow-xl flex-shrink-0 group cursor-pointer"
               onClick={() => { const p = displayedProjects.find(p => p.id === actualFeaturedId); if(p) onProjectClick(p); }}>
               <AnimatePresence mode="wait">
                 {displayedProjects.map((project) => project.id === actualFeaturedId && (
                   <motion.div key={project.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
                     className="absolute inset-0 w-full h-full">
                     <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" referrerPolicy="no-referrer" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                     
-                    <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-start gap-4">
-                      <div className="flex gap-2">
-                        <span className="bg-white/90 backdrop-blur-sm text-[#2C2C2C] px-3 py-1 rounded-full text-[10px] font-bold tracking-tight shadow-sm uppercase">{project.category}</span>
-                        {project.status && <span className="bg-[#800020] text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-tight shadow-md shadow-[#800020]/30">{project.status}</span>}
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-10 pt-24 bg-gradient-to-t from-black/95 via-black/50 to-transparent z-10 flex items-end justify-between gap-6 pointer-events-none">
+                      <div className="flex flex-col items-start gap-3 w-full">
+                        <div className="flex gap-2">
+                          <span className="bg-white/90 backdrop-blur-sm text-[#2C2C2C] px-3 py-1 rounded-full text-[9px] font-bold tracking-tight uppercase">{project.category}</span>
+                          {project.status && <span className="bg-[#800020] text-white px-3 py-1 rounded-full text-[9px] font-bold tracking-tight shadow-md shadow-[#800020]/30">{project.status}</span>}
+                        </div>
+                        <h3 className="text-2xl md:text-4xl font-display font-bold text-white tracking-tight drop-shadow-md leading-tight line-clamp-1">{project.title}</h3>
+                        <p className="text-white/80 text-xs md:text-sm font-medium leading-relaxed max-w-xl drop-shadow-md line-clamp-2"><EditableText value={project.description || ""} onSave={(v) => { const p = [...projects]; const i = p.findIndex(pp => pp.id === project.id); p[i].description = v; setProjects(p); }} isEditing={isEditing} /></p>
                       </div>
-                      <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight drop-shadow-lg leading-tight line-clamp-2">{project.title}</h3>
-                      <p className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-xl drop-shadow-md line-clamp-2">{project.description}</p>
-                      <div className="mt-2 px-6 py-3 bg-white/10 hover:bg-white text-white hover:text-[#1A2332] backdrop-blur-md font-bold text-xs tracking-widest transition-all duration-500 rounded-full flex gap-2 items-center uppercase border border-white/20">
-                        기획서 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      
+                      <div className="hidden md:flex shrink-0 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md text-white items-center justify-center group-hover:bg-[#800020] group-hover:scale-110 transition-all duration-300 pointer-events-auto shadow-lg">
+                        <ArrowRight className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
                       </div>
                     </div>
                   </motion.div>
@@ -864,7 +876,7 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
             </motion.div>
 
             {/* Right: Truncated List (Thumbnails) */}
-            <div className="w-full lg:w-[35%] flex flex-col gap-4">
+            <div className="hidden lg:flex w-[25%] flex-col gap-3 h-full">
               <AnimatePresence mode="popLayout">
                 {displayedProjects.map((project) => project.id !== actualFeaturedId && (
                   <motion.div 
@@ -875,13 +887,13 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
                     transition={{ duration: 0.4 }}
                     key={project.id} 
                     onClick={() => setFeaturedId(project.id)}
-                    className="relative flex-1 rounded-[1.5rem] overflow-hidden cursor-pointer group shadow-sm hover:shadow-xl transition-all duration-500 min-h-[120px] bg-zinc-900 border border-black/5"
+                    className="relative flex-1 rounded-[1.2rem] overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-500 bg-[#1A1A1A] border border-black/5"
                   >
-                    <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/10 group-hover:bg-black/20 transition-all duration-500" />
-                    <div className="absolute bottom-6 left-6 right-6 z-10 transition-transform duration-500 group-hover:translate-x-2">
-                      <span className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-1.5 block">{project.category}</span>
-                      <h3 className="text-lg lg:text-xl font-display font-bold text-white tracking-tight drop-shadow-md line-clamp-2 leading-tight">{project.title}</h3>
+                    <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500" />
+                    <div className="absolute bottom-5 left-5 right-5 z-10 transition-transform duration-500 group-hover:-translate-y-1">
+                      <span className="text-white/60 text-[8px] font-bold uppercase tracking-widest mb-1 block">{project.category}</span>
+                      <h3 className="text-sm font-display font-bold text-white tracking-tight drop-shadow-md line-clamp-2 leading-snug">{project.title}</h3>
                     </div>
                   </motion.div>
                 ))}
@@ -893,18 +905,6 @@ const Projects = ({ onProjectClick, isEditing, projects, setProjects, limit, set
             {projects.map((project, idx) => (
               <ProjectCard key={project.id} project={project} idx={idx} isEditing={isEditing} projects={projects} setProjects={setProjects} onProjectClick={onProjectClick} layout="default" />
             ))}
-          </div>
-        )}
-
-        {limit && setView && (
-          <div className="mt-20 text-center">
-            <button onClick={() => setView('portfolio')}
-              className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 bg-white border border-black/10 text-[#2C2C2C] font-bold tracking-widest text-sm rounded-full uppercase overflow-hidden shadow-sm transition-all duration-500 hover:shadow-[0_8px_24px_rgba(128,0,32,0.15)] hover:-translate-y-1 hover:border-[#800020]">
-              <span className="relative z-10 flex items-center gap-3 transition-colors duration-500 group-hover:text-white">
-                전체 포트폴리오 보기 <ArrowRight className="w-4 h-4" />
-              </span>
-              <div className="absolute inset-0 bg-[#800020] scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500" />
-            </button>
           </div>
         )}
       </div>
