@@ -1158,13 +1158,21 @@ const Resume = ({ setView, isEditing, data, setData }: ResumeProps) => {
     try {
       const opt = {
         margin: [0, 0, 0, 0], // use internal paddings
-        filename: `${data.name || '이력서'}_이력서.pdf`,
         image: { type: 'jpeg', quality: 1 },
         html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
         pagebreak: { mode: 'css' }
       };
-      await html2pdf().set(opt).from(element).save();
+      
+      const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `Resume_${data.name || 'Portfolio'}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
     } catch (err) {
       console.error('PDF generation failed:', err);
       alert('PDF 생성에 실패했습니다. 다시 시도해 주세요.');
