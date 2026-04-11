@@ -686,7 +686,7 @@ const Hero = ({ onPortfolioClick, onResumeClick, isEditing, content, setContent,
 
 // --- About ---
 const About = ({ isEditing, content, setContent }: { isEditing: boolean, content: any, setContent: (c: any) => void }) => (
-  <section id="about" className="scroll-mt-20 py-[160px] px-6 md:px-12 relative border-t border-black/5 min-h-[80vh] flex bg-[#FDFDFB] overflow-hidden">
+  <section id="about" className="scroll-mt-20 py-[120px] px-6 md:px-12 relative border-t border-black/5 min-h-screen flex items-center bg-[#FDFDFB] overflow-hidden">
     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
     
     <div className="max-w-7xl mx-auto w-full relative z-10 grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
@@ -985,7 +985,7 @@ const ICON_OPTIONS = [
 // --- Skills ---
 const Skills = ({ isEditing, skills, setSkills }: { isEditing: boolean, skills: Skill[], setSkills: (s: Skill[]) => void }) => {
   return (
-    <section id="skills" className="scroll-mt-20 py-[160px] px-6 md:px-12 relative min-h-screen flex flex-col items-start bg-[#1A1A1A] overflow-hidden rounded-t-[3rem] mt-[-3rem] z-20">
+    <section id="skills" className="scroll-mt-20 py-[120px] px-6 md:px-12 relative min-h-screen flex flex-col justify-center bg-[#1A1A1A] overflow-hidden rounded-t-[3rem] mt-[-3rem] z-20">
       <div className="absolute inset-0 pointer-events-none opacity-20 object-cover bg-repeat bg-[size:100px_100px]" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')"}}></div>
       
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col h-full">
@@ -1124,7 +1124,7 @@ const PlayHistory = ({ isEditing, history, setHistory, onViewAll }: { isEditing:
   };
 
   return (
-    <section id="play-history" className="scroll-mt-20 py-[160px] px-6 md:px-12 relative min-h-screen bg-[#F6F6F3] overflow-hidden border-t border-black/5">
+    <section id="play-history" className="scroll-mt-20 py-[120px] px-6 md:px-12 relative min-h-screen flex items-center bg-[#F6F6F3] overflow-hidden border-t border-black/5">
       <div className="max-w-7xl mx-auto w-full relative z-10 grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
         
         {/* Left: Dashboard Stats */}
@@ -1667,7 +1667,7 @@ const CoverLetter = ({ setView, isEditing, data, setData }: ResumeProps) => {
 
 // --- Contact ---
 const Contact = () => (
-  <section id="contact" className="h-[80vh] px-0 relative flex flex-col items-center justify-center bg-[#800020] overflow-hidden group/contact border-t border-black/10">
+  <section id="contact" className="min-h-screen px-0 relative flex flex-col items-center justify-center bg-[#800020] overflow-hidden group/contact border-t border-black/10">
     {/* Default State: Massive Typo */}
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/contact:scale-[1.15] group-hover/contact:opacity-0 mix-blend-overlay">
        <span className="text-[14vw] font-display font-black text-white tracking-tighter leading-[0.8] m-0 p-0 text-center uppercase">
