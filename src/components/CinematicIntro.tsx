@@ -56,7 +56,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     }
   }, []);
 
-  const dur = Math.max(3.5, (contentHeight - vh) / 1800);
+  const dur = Math.max(2.5, (contentHeight - vh) / 3000);
 
   // 렌더링할 공통 UI 블록
   const renderContent = () => (
