@@ -34,7 +34,12 @@ const CHART_DATA = [
 ];
 
 export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
-  const [isIntroActive, setIsIntroActive] = useState(true);
+  const [isIntroActive, setIsIntroActive] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('gamingDnaIntroPlayed') !== 'true';
+    }
+    return true;
+  });
   const [activeGenre, setActiveGenre] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
@@ -42,6 +47,7 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
 
   const handleIntroComplete = () => {
     setIsIntroActive(false);
+    sessionStorage.setItem('gamingDnaIntroPlayed', 'true');
   };
 
   // Fix: Match local data categories (Pc, Console, Mobile)
