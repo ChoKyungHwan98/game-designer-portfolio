@@ -73,9 +73,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
               {CHART_DATA.map((d, i) => { const p = pt(d.score, d.angle); return <circle key={i} cx={p.x} cy={p.y} r="4" fill="#0047BB" />; })}
               {CHART_DATA.map((d, i) => { const lp = pt(115, d.angle); return <text key={i} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle" className="text-[13px] font-bold tracking-tight fill-zinc-400">{d.label}</text>; })}
             </svg>
-            <div className="flex flex-wrap justify-center gap-2 mt-6 w-full opacity-50 pointer-events-none">
-              <button className="px-4 py-2 rounded-full text-[12px] font-bold transition-all bg-[#0047BB] text-white">전체</button>
-            </div>
           </div>
           <div className="flex flex-col gap-4">
             <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex-1 flex flex-col justify-center">
@@ -111,9 +108,17 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
         </div>
 
         {/* 게임 카드 그리드 — 스크롤 시작 화면 */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-black/10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-black/10 gap-4">
           <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">게임 상세 플레이 이력</h2>
         </div>
+
+        <div className="flex flex-wrap items-center gap-2 mb-8 opacity-60 pointer-events-none">
+          <button className="px-4 py-2 rounded-full text-[13px] font-bold transition-all bg-[#0047BB] text-white shadow-md">전체</button>
+          {['RPG', '어드벤처', '퍼즐', '액션', '전략', '시뮬레이션', '슈팅', '리듬'].map(genre => (
+            <button key={genre} className="px-4 py-2 rounded-full text-[13px] font-bold transition-all bg-zinc-100 text-zinc-500">{genre}</button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {ALL_GAMES.map((game) => (
             <div key={game.id} className="relative group h-[140px] rounded-2xl overflow-hidden border border-black/5 shadow-sm bg-zinc-900">

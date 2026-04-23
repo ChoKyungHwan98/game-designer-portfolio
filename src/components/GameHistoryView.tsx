@@ -187,12 +187,7 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
                 )}
               </svg>
             </div>
-            <div className="flex flex-wrap justify-center gap-2 mt-6 w-full">
-              <button onClick={() => setActiveGenre(null)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all ${!activeGenre ? 'bg-[#0047BB] text-white' : 'bg-zinc-100 text-zinc-500'}`}>전체</button>
-              {Object.keys(GENRE_MAP).map(genre => (
-                <button key={genre} onClick={() => setActiveGenre(genre)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all ${activeGenre === genre ? 'bg-[#0047BB] text-white' : 'bg-zinc-100 text-zinc-500'}`}>{genre}</button>
-              ))}
-            </div>
+
           </div>
 
           {/* Stats Section */}
@@ -214,13 +209,20 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
         </div>
 
         {/* Grid Section */}
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-black/10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-black/10 gap-4">
           <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
             게임 상세 플레이 이력 {activeGenre && <span className="text-[#0047BB] before:content-['|'] before:text-zinc-300 before:mr-3 before:font-light">{activeGenre} 검색 결과</span>}
           </h2>
           {activeGenre && (
             <button onClick={() => setActiveGenre(null)} className="text-sm font-bold text-zinc-400 hover:text-red-500 flex items-center gap-1 transition-colors"><Filter className="w-4 h-4" /> 필터 해제</button>
           )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          <button onClick={() => setActiveGenre(null)} className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all ${!activeGenre ? 'bg-[#0047BB] text-white shadow-md' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}>전체</button>
+          {Object.keys(GENRE_MAP).map(genre => (
+            <button key={genre} onClick={() => setActiveGenre(genre)} className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all ${activeGenre === genre ? 'bg-[#0047BB] text-white shadow-md' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200'}`}>{genre}</button>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
