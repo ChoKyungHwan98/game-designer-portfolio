@@ -84,20 +84,10 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
       animationFrameId = requestAnimationFrame(animateScroll);
     }, 1200);
 
-    // 유저 개입 시 즉시 스크롤 중단 및 화면 정상화
-    const handleWheel = () => { 
-      isCancelled = true; 
-      setIntroPhase(prev => prev === 'splash' ? 'splash' : 'done');
-    };
-    window.addEventListener('wheel', handleWheel, { passive: true });
-    window.addEventListener('touchstart', handleWheel, { passive: true });
-
     return () => {
       isCancelled = true;
       clearTimeout(splashTimer);
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleWheel);
     };
   }, []);
 
@@ -151,7 +141,7 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
         </div>
       </div>
 
-      <div className="min-h-screen bg-[#FDFCF8] pt-28 pb-32">
+      <div className="min-h-screen bg-[#FDFCF8] pt-28 pb-32 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           
           {/* ── 2. 레이더 차트 & 통계 (스크롤이 끝나면 웅장하게 등장) ── */}
