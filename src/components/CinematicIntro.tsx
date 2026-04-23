@@ -60,7 +60,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
 
   // 렌더링할 공통 UI 블록
   const renderContent = () => (
-    <div className="pt-28 pb-32">
+    <motion.section className="min-h-screen bg-transparent pt-28 pb-32 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* 통계 + 레이더차트 — 스크롤 끝 화면 */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mb-24 lg:mb-32">
@@ -145,7 +145,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.section>
   );
 
   return (
