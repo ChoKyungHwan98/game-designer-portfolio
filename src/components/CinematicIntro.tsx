@@ -21,7 +21,7 @@ const CHART_DATA = [
 const SVG = 420;
 const C = SVG / 2;
 const pt = (v: number, a: number) => {
-  const r = (v / 100) * (C - 35);
+  const r = (v / 100) * (C - 40);
   const rad = (a - 90) * (Math.PI / 180);
   return { x: C + r * Math.cos(rad), y: C + r * Math.sin(rad) };
 };
