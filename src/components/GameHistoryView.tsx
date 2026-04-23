@@ -112,7 +112,7 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
         initial={{ opacity: 0 }} 
         animate={{ opacity: isIntroActive ? 0 : 1 }} 
         transition={{ duration: 0.8 }}
-        className="min-h-screen bg-transparent pt-28 pb-32"
+        className="min-h-screen bg-transparent pt-28 pb-32 overflow-x-hidden"
       >
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">

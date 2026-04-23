@@ -60,70 +60,80 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
 
   // 렌더링할 공통 UI 블록
   const renderContent = () => (
-    <div style={{ backgroundColor: '#FDFCF8', padding: '112px 48px 120px', width: '100%', boxSizing: 'border-box' }}>
-      {/* 통계 + 레이더차트 — 스크롤 끝 화면 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginBottom: 64, maxWidth: '1280px', margin: '0 auto 64px auto' }}>
-        <div style={{ backgroundColor: 'white', borderRadius: 32, padding: 32, border: '1px solid rgba(0,0,0,0.05)' }}>
-          <div style={{ fontWeight: 700, fontSize: 18, color: '#71717a', marginBottom: 16 }}>장르별 숙련도 차트</div>
-          <svg width={SVG} height={SVG} style={{ overflow: 'visible', display: 'block', margin: '0 auto' }}>
-            {bgLvls.map((p, i) => <polygon key={i} points={p} fill="none" stroke="#E5E7EB" strokeWidth="1" />)}
-            {CHART_DATA.map((d, i) => { const p = pt(100, d.angle); return <line key={i} x1={C} y1={C} x2={p.x} y2={p.y} stroke="#E5E7EB" strokeWidth="1" />; })}
-            <polygon points={polyPts} fill="rgba(0,71,187,0.15)" stroke="#0047BB" strokeWidth="2.5" />
-            {CHART_DATA.map((d, i) => { const p = pt(d.score, d.angle); return <circle key={i} cx={p.x} cy={p.y} r="4" fill="#0047BB" />; })}
-            {CHART_DATA.map((d, i) => { const lp = pt(118, d.angle); return <text key={i} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle" style={{ fontSize: 12, fontWeight: 700, fill: '#a1a1aa', fontFamily: 'inherit' }}>{d.label}</text>; })}
-          </svg>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ backgroundColor: 'white', borderRadius: 32, padding: 32, border: '1px solid rgba(0,0,0,0.05)', flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: 18, color: '#18181b', marginBottom: 32 }}>플레이 요약 통계</div>
-            {[
-              { label: '총 플레이', val: `${ALL_GAMES.length}종 이상`, blue: true },
-              { label: '주력 플랫폼', val: 'PC / 콘솔' },
-              { label: '최장 플레이', val: '메이플스토리 (15년)' },
-              { label: '전문 분야', val: 'RPG / 리듬', chip: true },
-            ].map(({ label, val, blue, chip }) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.05)', padding: '18px 0' }}>
-                <span style={{ fontWeight: 700, color: '#2C2C2C' }}>{label}</span>
-                {chip
-                  ? <span style={{ backgroundColor: 'rgba(0,71,187,0.1)', color: '#0047BB', fontWeight: 700, fontSize: 15, padding: '4px 12px', borderRadius: 8 }}>{val}</span>
-                  : <span style={{ fontWeight: blue ? 900 : 700, fontSize: blue ? 20 : 17, color: blue ? '#0047BB' : '#52525b' }}>{val}</span>
-                }
+    <div className="pt-28 pb-32">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* 통계 + 레이더차트 — 스크롤 끝 화면 */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+          <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex flex-col items-center justify-center min-h-[400px]">
+            <h3 className="font-bold text-lg text-zinc-500 tracking-tight self-start mb-6">장르별 숙련도 차트</h3>
+            <svg width={SVG} height={SVG} className="overflow-visible block mx-auto">
+              {bgLvls.map((p, i) => <polygon key={i} points={p} fill="none" stroke="#E5E7EB" strokeWidth="1" />)}
+              {CHART_DATA.map((d, i) => { const p = pt(100, d.angle); return <line key={i} x1={C} y1={C} x2={p.x} y2={p.y} stroke="#E5E7EB" strokeWidth="1" />; })}
+              <polygon points={polyPts} fill="rgba(0,71,187,0.15)" stroke="#0047BB" strokeWidth="2.5" />
+              {CHART_DATA.map((d, i) => { const p = pt(d.score, d.angle); return <circle key={i} cx={p.x} cy={p.y} r="4" fill="#0047BB" />; })}
+              {CHART_DATA.map((d, i) => { const lp = pt(115, d.angle); return <text key={i} x={lp.x} y={lp.y} textAnchor="middle" dominantBaseline="middle" className="text-[13px] font-bold tracking-tight fill-zinc-400">{d.label}</text>; })}
+            </svg>
+            <div className="flex flex-wrap justify-center gap-2 mt-6 w-full opacity-50 pointer-events-none">
+              <button className="px-4 py-2 rounded-full text-[12px] font-bold transition-all bg-[#0047BB] text-white">전체</button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex-1 flex flex-col justify-center">
+              <h3 className="font-bold text-lg text-zinc-500 tracking-tight mb-8">플레이 요약 통계</h3>
+              <ul className="space-y-6">
+                {[
+                  { label: '총 플레이', val: `${ALL_GAMES.length}종 이상`, blue: true },
+                  { label: '주력 플랫폼', val: 'PC / 콘솔' },
+                  { label: '최장 플레이', val: '메이플스토리 (15년)' },
+                  { label: '전문 분야', val: 'RPG / 리듬', chip: true },
+                ].map(({ label, val, blue, chip }) => (
+                  <li key={label} className={`flex items-center justify-between ${label !== '전문 분야' ? 'border-b border-black/5 pb-4' : ''}`}>
+                    <span className="font-bold text-[#2C2C2C]">{label}</span>
+                    {chip
+                      ? <span className="font-bold text-[#0047BB] text-lg bg-[#0047BB]/10 px-3 py-1 rounded-md">{val}</span>
+                      : <span className={`font-bold text-lg ${blue ? 'text-[#0047BB] text-xl font-black' : 'text-zinc-600'}`}>{val}</span>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#0047BB] text-white border border-[#0047BB] rounded-2xl p-6 shadow-sm">
+                <span className="block font-bold text-blue-200 mb-2">PC/콘솔</span>
+                <span className="text-3xl font-black">{pcCount}종</span>
               </div>
-            ))}
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-            <div style={{ backgroundColor: '#0047BB', borderRadius: 24, padding: '22px 28px' }}>
-              <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14, fontWeight: 700, marginBottom: 8 }}>PC/콘솔</div>
-              <div style={{ color: 'white', fontWeight: 900, fontSize: 32 }}>{pcCount}종</div>
-            </div>
-            <div style={{ backgroundColor: 'white', borderRadius: 24, padding: '22px 28px', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <div style={{ color: '#71717a', fontSize: 14, fontWeight: 700, marginBottom: 8 }}>모바일</div>
-              <div style={{ fontWeight: 900, fontSize: 32, color: '#2C2C2C' }}>{mobileCount}종</div>
+              <div className="bg-white border border-black/5 rounded-2xl p-6 shadow-sm">
+                <span className="block font-bold text-zinc-400 mb-2">모바일</span>
+                <span className="text-3xl font-black text-[#2C2C2C]">{mobileCount}종</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 게임 카드 그리드 — 스크롤 시작 화면 */}
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        <div style={{ borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: 24, marginBottom: 32 }}>
-          <h2 style={{ fontWeight: 900, fontSize: 24, color: '#18181b' }}>게임 상세 플레이 이력</h2>
+        {/* 게임 카드 그리드 — 스크롤 시작 화면 */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-black/10">
+          <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">게임 상세 플레이 이력</h2>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {ALL_GAMES.map((game) => (
-            <div key={game.id} style={{ height: 140, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid rgba(0,0,0,0.05)', backgroundColor: game.image ? '#18181b' : fallbackBg(game.genre) }}>
-              {game.image && <img src={game.image} alt="" crossOrigin="anonymous" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }} />}
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)' }} />
-              <div style={{ position: 'relative', height: '100%', zIndex: 1, padding: '12px 16px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 9, fontWeight: 900, color: 'white', background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{game.genre}</span>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase' }}>
+            <div key={game.id} className="relative group h-[140px] rounded-2xl overflow-hidden border border-black/5 shadow-sm bg-zinc-900">
+              <div className="absolute inset-0 bg-zinc-900">
+                {game.image && <img src={game.image} alt="" crossOrigin="anonymous" className="w-full h-full object-cover opacity-60" />}
+              </div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="relative h-full z-10 p-5 flex flex-col justify-between">
+                <div className="flex justify-between items-start mb-2">
+                  <span className="text-[9px] font-black text-white bg-white/20 backdrop-blur-md px-2 py-0.5 rounded tracking-widest uppercase">{game.genre}</span>
+                  <span className="text-[9px] font-bold text-white/50 border border-white/20 px-1.5 py-0.5 rounded uppercase">
                     {['Pc', 'PC', 'Console'].includes(game.category) ? 'PC/CONSOLE' : 'MOBILE'}
                   </span>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: 'white', fontSize: 15, lineHeight: 1.3, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{game.title}</div>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', marginTop: 3, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{game.company}</div>
+                  <h4 className="font-bold text-white text-base md:text-lg leading-tight mb-1 drop-shadow-sm line-clamp-2">{game.title}</h4>
+                  <div className="flex items-center justify-between mt-auto pt-2">
+                    <span className="text-[10px] font-bold text-white/60 truncate max-w-[60%]">{game.company}</span>
+                    {game.playTime && <span className="text-[10px] font-black text-yellow-400 drop-shadow-md">{game.playTime}</span>}
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,7 +144,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[2000] overflow-hidden bg-[#FDFCF8]">
+    <div className="fixed inset-0 z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply">
       {/* ── 렌더링된 높이를 재기 위한 보이지 않는 래퍼 ── */}
       {contentHeight === 0 && (
         <div ref={contentRef} style={{ position: 'absolute', top: 0, left: 0, visibility: 'hidden', width: '100%' }}>
