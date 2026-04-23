@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Search, Filter } from 'lucide-react';
 import { ALL_GAMES } from '../data/games';
+import { CinematicIntro } from './CinematicIntro';
 
 interface GameHistoryViewProps {
   onBack: () => void;
@@ -32,65 +34,17 @@ const CHART_DATA = [
 ];
 
 export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
+  const [isIntroActive, setIsIntroActive] = useState(true);
   const [activeGenre, setActiveGenre] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
-  const [displayLimit, setDisplayLimit] = useState(ALL_GAMES.length);
+  const [displayLimit, setDisplayLimit] = useState(32);
 
-  // UX 연출 페이즈: splash(도입부) -> scrolling(쾌속 스크롤) -> done(차트 등장)
-  const [introPhase, setIntroPhase] = useState<'splash' | 'scrolling' | 'done'>('splash');
+  const handleIntroComplete = () => {
+    setIsIntroActive(false);
+  };
 
-  // ── 30년 경력 디자이너/개발자를 위한 시네마틱 스크롤 연출 ──
-  useEffect(() => {
-    let animationFrameId: number;
-    let isCancelled = false;
-
-    // 1. 강렬한 Splash Screen (1.2초)
-    const splashTimer = setTimeout(() => {
-      if (isCancelled) return;
-      setIntroPhase('scrolling');
-      
-      // 화면 최하단으로 즉시 셋업
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      window.scrollTo({ top: maxScroll, behavior: 'instant' });
-      
-      // 2. 쾌속 상향 스크롤 (초광속으로 아카이브를 훑고 지나가는 느낌)
-      const startY = window.scrollY;
-      const targetY = 0;
-      const duration = 2400; // 2.4초로 약간 단축하여 텐션 증가
-      const startTime = performance.now();
-
-      const animateScroll = (currentTime: number) => {
-        if (isCancelled) return;
-        
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing: easeInOutQuart (폭발적으로 가속하다가 끝에서 극도로 부드럽게 감속)
-        const ease = progress < 0.5 
-          ? 8 * progress * progress * progress * progress 
-          : 1 - Math.pow(-2 * progress + 2, 4) / 2;
-        
-        window.scrollTo(0, startY + (targetY - startY) * ease);
-
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(animateScroll);
-        } else {
-          // 3. 스크롤 완료 후 차트 웅장하게 등장
-          setIntroPhase('done');
-        }
-      };
-
-      animationFrameId = requestAnimationFrame(animateScroll);
-    }, 1200);
-
-    return () => {
-      isCancelled = true;
-      clearTimeout(splashTimer);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
+  // Fix: Match local data categories (Pc, Console, Mobile)
   const pcConsoleGames = ALL_GAMES.filter(g => g.category === 'Pc' || g.category === 'PC' || g.category === 'Console');
   const mobileGames = ALL_GAMES.filter(g => g.category === 'Mobile');
 
@@ -101,152 +55,236 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
         (g.company && g.company.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (g.genre && g.genre.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+    
     let matchesGenre = true;
     if (activeGenre) {
       const keywords = GENRE_MAP[activeGenre] || [activeGenre];
       matchesGenre = keywords.some(kw => g.genre?.toLowerCase().includes(kw.toLowerCase()));
     }
+
     return matchesSearch && matchesGenre;
   });
 
+  React.useEffect(() => {
+    setDisplayLimit(32);
+  }, [activeGenre, searchQuery]);
+
   const displayedGames = filteredGames.slice(0, displayLimit);
 
-  // Radar logic
   const getPt = (value: number, angleDeg: number, size: number) => {
     const cx = size / 2;
     const cy = size / 2;
-    const r = (value / 100) * (size / 2 - 40);
+    const r = (value / 100) * (size / 2 - 40); // 40px padding
     const param = (angleDeg - 90) * (Math.PI / 180);
     return `${cx + r * Math.cos(param)},${cy + r * Math.sin(param)}`;
   };
+
   const svgSize = 340;
   const cx = svgSize / 2;
   const cy = svgSize / 2;
+
   const polygonPoints = CHART_DATA.map(d => getPt(d.score, d.angle, svgSize)).join(' ');
-  const bgPolygons = [20, 40, 60, 80, 100].map(level => CHART_DATA.map(d => getPt(level, d.angle, svgSize)).join(' '));
+  const bgPolygons = [20, 40, 60, 80, 100].map(level => {
+    return CHART_DATA.map(d => getPt(level, d.angle, svgSize)).join(' ');
+  });
+
+  const getFallbackGradient = (genre: string) => {
+    const g = genre.toLowerCase();
+    if (g.includes('rpg')) return 'from-blue-600/40 to-indigo-900/80';
+    if (g.includes('액션') || g.includes('난투')) return 'from-red-600/40 to-rose-900/80';
+    if (g.includes('전략') || g.includes('aos') || g.includes('rts')) return 'from-emerald-600/40 to-teal-900/80';
+    if (g.includes('슈팅') || g.includes('fps')) return 'from-zinc-600/40 to-slate-900/80';
+    if (g.includes('리듬')) return 'from-purple-600/40 to-fuchsia-900/80';
+    if (g.includes('퍼즐') || g.includes('캐주얼')) return 'from-amber-500/40 to-orange-800/80';
+    if (g.includes('레이싱') || g.includes('스포츠')) return 'from-cyan-600/40 to-blue-800/80';
+    return 'from-zinc-400/40 to-zinc-800/80';
+  };
 
   return (
     <>
-      {/* ── 1. 시네마틱 스플래시 스크린 (진입 시 몰입감 극대화) ── */}
-      <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0047BB] text-white transition-all duration-700 ease-in-out ${introPhase === 'splash' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
-        <div className="overflow-hidden relative z-10">
-          <h1 className={`text-6xl md:text-8xl font-black tracking-tighter transform transition-transform duration-1000 delay-100 ${introPhase === 'splash' ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
-            GAMING DNA
-          </h1>
-        </div>
-        <div className={`mt-8 flex items-center gap-3 opacity-80 transform transition-all duration-1000 delay-300 ${introPhase === 'splash' ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          <p className="font-mono text-sm tracking-widest uppercase">Extracting {ALL_GAMES.length}+ Records...</p>
-        </div>
-      </div>
+      <AnimatePresence>
+        {isIntroActive && (
+          <CinematicIntro onComplete={handleIntroComplete} />
+        )}
+      </AnimatePresence>
 
-      <div className="min-h-screen bg-[#FDFCF8] pt-28 pb-32 overflow-x-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          {/* ── 2. 레이더 차트 & 통계 (스크롤이 끝나면 웅장하게 등장) ── */}
-          <div className={`flex flex-col justify-center mb-16 transform transition-all duration-1000 ease-out ${introPhase === 'done' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-24'}`}>
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm hover:shadow-md transition-shadow duration-500 flex flex-col items-center justify-center min-h-[480px] relative overflow-hidden">
-              <div className="absolute inset-0 bg-linear-to-br from-[#0047BB]/[0.02] to-transparent pointer-events-none" />
-              <h3 className="font-bold text-lg text-zinc-500 tracking-tight self-start mb-6 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0047BB]"></span>
-                장르별 숙련도 차트
-              </h3>
-              <div className="relative" style={{ width: svgSize, height: svgSize }}>
-                <svg width={svgSize} height={svgSize} className="overflow-visible">
-                  {bgPolygons.map((pts, i) => (
-                    <polygon key={i} points={pts} fill="none" stroke="#E5E7EB" strokeWidth="1" />
-                  ))}
-                  {CHART_DATA.map((d, i) => (
-                    <line key={i} x1={cx} y1={cy} x2={getPt(100, d.angle, svgSize).split(',')[0]} y2={getPt(100, d.angle, svgSize).split(',')[1]} stroke="#E5E7EB" strokeWidth="1" />
-                  ))}
-                  {/* 정적 폴리곤 (애니메이션 제거됨) */}
-                  <polygon 
-                    points={polygonPoints} fill="rgba(0, 71, 187, 0.15)" stroke="#0047BB" strokeWidth="2.5" 
-                  />
-                  {CHART_DATA.map((d, i) => {
-                    const [px, py] = getPt(d.score, d.angle, svgSize).split(',');
-                    return <circle key={i} cx={px} cy={py} r="4" fill="#0047BB" />;
-                  })}
-                  {CHART_DATA.map((d, i) => {
-                    const [lx, ly] = getPt(115, d.angle, svgSize).split(',');
-                    const isActive = activeGenre === d.label;
-                    return (
-                      <g key={i} onClick={() => setActiveGenre(isActive ? null : d.label)} className="cursor-pointer group" transform={`translate(${lx}, ${ly})`}>
-                        <text x="0" y="0" textAnchor="middle" alignmentBaseline="middle" className={`font-bold transition-all text-[13px] tracking-tight ${isActive ? 'fill-[#0047BB] text-[15px]' : 'fill-zinc-400 group-hover:fill-zinc-700'}`}>{d.label}</text>
-                      </g>
-                    );
-                  })}
-                </svg>
-              </div>
-              <div className="flex flex-wrap justify-center gap-2 mt-6 w-full">
-                <button onClick={() => setActiveGenre(null)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all duration-300 ${!activeGenre ? 'bg-[#0047BB] text-white shadow-md shadow-[#0047BB]/20 scale-105' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700'}`}>전체</button>
-                {Object.keys(GENRE_MAP).map(genre => (
-                  <button key={genre} onClick={() => setActiveGenre(genre)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all duration-300 ${activeGenre === genre ? 'bg-[#0047BB] text-white shadow-md shadow-[#0047BB]/20 scale-105' : 'bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700'}`}>{genre}</button>
+      <motion.section 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: isIntroActive ? 0 : 1 }} 
+        transition={{ duration: 0.8 }}
+        className="min-h-screen bg-transparent pt-28 pb-32"
+      >
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Minimalist Header to match GitHub design (removed search bar and big titles) */}
+        
+        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+          {/* Radar Chart Section */}
+          <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex flex-col items-center justify-center min-h-[400px]">
+            <h3 className="font-bold text-lg text-zinc-500 tracking-tight self-start mb-6">장르별 숙련도 차트</h3>
+            <div className="relative" style={{ width: svgSize, height: svgSize }}>
+              <svg width={svgSize} height={svgSize} className="overflow-visible">
+                {bgPolygons.map((pts, i) => (
+                  <polygon key={i} points={pts} fill="none" stroke="#E5E7EB" strokeWidth="1" />
                 ))}
-              </div>
-            </div>
+                {CHART_DATA.map((d, i) => (
+                  <line key={i} x1={cx} y1={cy} x2={getPt(100, d.angle, svgSize).split(',')[0]} y2={getPt(100, d.angle, svgSize).split(',')[1]} stroke="#E5E7EB" strokeWidth="1" />
+                ))}
+                
+                {/* Data Polygon with Stroke Dash Animation */}
+                <motion.polygon 
+                  initial={{ strokeDasharray: "0, 2000" }}
+                  animate={{ strokeDasharray: "2000, 0" }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  points={polygonPoints} fill="rgba(0, 71, 187, 0.15)" stroke="#0047BB" strokeWidth="2.5" 
+                />
+                
+                {/* Data Points */}
+                {CHART_DATA.map((d, i) => {
+                  const [px, py] = getPt(d.score, d.angle, svgSize).split(',');
+                  const isHovered = hoveredPoint === i;
+                  return (
+                    <g key={`pt-${i}`}>
+                      <circle 
+                        cx={px} cy={py} 
+                        r={isHovered ? "6" : "4"} 
+                        fill={isHovered ? "white" : "#0047BB"} 
+                        stroke="#0047BB" 
+                        strokeWidth={isHovered ? "2" : "0"} 
+                        className="transition-all cursor-pointer" 
+                        onMouseEnter={() => setHoveredPoint(i)} 
+                        onMouseLeave={() => setHoveredPoint(null)} 
+                      />
+                    </g>
+                  );
+                })}
+                
+                {/* Labels */}
+                {CHART_DATA.map((d, i) => {
+                  const [lx, ly] = getPt(115, d.angle, svgSize).split(',');
+                  const isActive = activeGenre === d.label;
+                  return (
+                    <g key={i} onClick={() => setActiveGenre(isActive ? null : d.label)} className="cursor-pointer group" transform={`translate(${lx}, ${ly})`}>
+                      <text x="0" y="0" textAnchor="middle" alignmentBaseline="middle" className={`font-bold transition-all text-[13px] tracking-tight ${isActive ? 'fill-[#0047BB] text-[15px]' : 'fill-zinc-400 group-hover:fill-zinc-700'}`}>{d.label}</text>
+                    </g>
+                  );
+                })}
 
-            <div className="flex flex-col gap-4">
-              <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm hover:shadow-md transition-shadow duration-500 flex-1 flex flex-col justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-linear-to-bl from-[#0047BB]/[0.02] to-transparent pointer-events-none" />
-                <h3 className="font-bold text-lg text-zinc-500 tracking-tight mb-8 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0047BB]"></span>
-                  플레이 요약 통계
-                </h3>
-                <ul className="space-y-6">
-                  <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">총 플레이</span><span className="font-black text-[#0047BB] text-xl">{ALL_GAMES.length}종 이상</span></li>
-                  <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">주력 플랫폼</span><span className="font-bold text-zinc-600 text-lg">PC / 콘솔</span></li>
-                  <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">최장 플레이</span><span className="font-bold text-zinc-600 text-lg">메이플스토리 (15년)</span></li>
-                  <li className="flex items-center justify-between"><span className="font-bold text-[#2C2C2C]">전문 분야</span><span className="font-bold text-[#0047BB] text-lg bg-[#0047BB]/10 px-3 py-1 rounded-md">RPG / 리듬</span></li>
-                </ul>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-[#0047BB] to-[#003388] text-white border border-[#0047BB] rounded-2xl p-6 shadow-md shadow-[#0047BB]/20 relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                  <span className="block font-bold text-blue-200 mb-2 relative z-10">PC/콘솔</span>
-                  <span className="text-3xl font-black relative z-10">{pcConsoleGames.length}종</span>
-                </div>
-                <div className="bg-white border border-black/5 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
-                  <div className="absolute -right-4 -top-4 w-24 h-24 bg-[#0047BB]/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
-                  <span className="block font-bold text-zinc-400 mb-2 relative z-10">모바일</span>
-                  <span className="text-3xl font-black text-[#2C2C2C] relative z-10">{mobileGames.length}종</span>
-                </div>
-              </div>
+                {/* Tooltip */}
+                {hoveredPoint !== null && (
+                  <g className="pointer-events-none">
+                    {(() => {
+                      const d = CHART_DATA[hoveredPoint];
+                      const [px, py] = getPt(d.score, d.angle, svgSize).split(',');
+                      return (
+                        <>
+                          <rect x={Number(px) - 24} y={Number(py) - 34} width="48" height="24" rx="4" fill="#1A2332" />
+                          <text x={px} y={Number(py) - 21} textAnchor="middle" alignmentBaseline="middle" fill="white" className="text-[12px] font-bold tracking-widest">{d.score}점</text>
+                        </>
+                      );
+                    })()}
+                  </g>
+                )}
+              </svg>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2 mt-6 w-full">
+              <button onClick={() => setActiveGenre(null)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all ${!activeGenre ? 'bg-[#0047BB] text-white' : 'bg-zinc-100 text-zinc-500'}`}>전체</button>
+              {Object.keys(GENRE_MAP).map(genre => (
+                <button key={genre} onClick={() => setActiveGenre(genre)} className={`px-4 py-2 rounded-full text-[12px] font-bold transition-all ${activeGenre === genre ? 'bg-[#0047BB] text-white' : 'bg-zinc-100 text-zinc-500'}`}>{genre}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="flex flex-col gap-4">
+            <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex-1 flex flex-col justify-center">
+              <h3 className="font-bold text-lg text-zinc-500 tracking-tight mb-8">플레이 요약 통계</h3>
+              <ul className="space-y-6">
+                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">총 플레이</span><span className="font-black text-[#0047BB] text-xl">{ALL_GAMES.length}종 이상</span></li>
+                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">주력 플랫폼</span><span className="font-bold text-zinc-600 text-lg">PC / 콘솔</span></li>
+                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">최장 플레이</span><span className="font-bold text-zinc-600 text-lg">메이플스토리 (15년)</span></li>
+                <li className="flex items-center justify-between"><span className="font-bold text-[#2C2C2C]">전문 분야</span><span className="font-bold text-[#0047BB] text-lg bg-[#0047BB]/10 px-3 py-1 rounded-md">RPG / 리듬</span></li>
+              </ul>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#0047BB] text-white border border-[#0047BB] rounded-2xl p-6 shadow-sm"><span className="block font-bold text-blue-200 mb-2">PC/콘솔</span><span className="text-3xl font-black">{pcConsoleGames.length}종</span></div>
+              <div className="bg-white border border-black/5 rounded-2xl p-6 shadow-sm"><span className="block font-bold text-zinc-400 mb-2">모바일</span><span className="text-3xl font-black text-[#2C2C2C]">{mobileGames.length}종</span></div>
             </div>
           </div>
         </div>
 
-        {/* Game Grid Section */}
+        {/* Grid Section */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-black/10">
-          <h2 className="text-2xl font-black tracking-tight text-[#18181b]">게임 상세 플레이 이력</h2>
+          <h2 className="text-2xl font-black tracking-tight flex items-center gap-3">
+            게임 상세 플레이 이력 {activeGenre && <span className="text-[#0047BB] before:content-['|'] before:text-zinc-300 before:mr-3 before:font-light">{activeGenre} 검색 결과</span>}
+          </h2>
+          {activeGenre && (
+            <button onClick={() => setActiveGenre(null)} className="text-sm font-bold text-zinc-400 hover:text-red-500 flex items-center gap-1 transition-colors"><Filter className="w-4 h-4" /> 필터 해제</button>
+          )}
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {displayedGames.map((game) => (
-            <div key={game.id} className="group relative h-[140px] rounded-2xl overflow-hidden border border-black/5 shadow-sm bg-zinc-900 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10">
-              {game.image && (
-                <img src={game.image} alt={game.title} className="w-full h-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-80" loading="lazy" />
-              )}
-              <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/40 to-transparent transition-opacity duration-300 group-hover:opacity-90" />
-              <div className="relative h-full z-10 p-5 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[9px] font-black text-white bg-white/10 backdrop-blur-md border border-white/20 px-2 py-0.5 rounded tracking-widest uppercase transition-transform duration-300 group-hover:scale-105">{game.genre}</span>
+          <AnimatePresence mode="popLayout">
+            {displayedGames.map((game) => (
+              <motion.div 
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                key={game.id} 
+                className="relative group h-[140px] rounded-2xl overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all"
+              >
+                {/* Background Layer (Image or Fallback) */}
+                <div className={`absolute inset-0 transition-transform duration-500 group-hover:scale-110 ${game.image ? 'bg-zinc-900' : `bg-linear-to-br ${getFallbackGradient(game.genre)}`}`}>
+                  {game.image && (
+                    <img src={game.image} alt={game.title} className="w-full h-full object-cover opacity-60" loading="lazy" style={{ objectPosition: game.position || 'center', objectFit: (game.size as any) || 'cover' }} />
+                  )}
+                </div>
+
+                {/* Gradient Overlay for Readability */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+
+                {/* Content Layer */}
+                <div className="relative h-full z-10 p-5 flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-[9px] font-black text-white bg-white/20 backdrop-blur-md px-2 py-0.5 rounded tracking-widest uppercase">{game.genre}</span>
+                      <span className="text-[9px] font-bold text-white/50 border border-white/20 px-1.5 py-0.5 rounded uppercase">
+                        {game.category === 'Pc' || game.category === 'PC' || game.category === 'Console' ? 'PC/CONSOLE' : 'MOBILE'}
+                      </span>
+                    </div>
+                    <h4 className="font-bold text-white text-base md:text-lg leading-tight mb-1 group-hover:text-blue-400 transition-colors drop-shadow-sm line-clamp-2">{game.title}</h4>
                   </div>
-                  <h4 className="font-bold text-white text-[15px] leading-tight mb-1 truncate transition-colors duration-300 group-hover:text-blue-200">{game.title}</h4>
+                  <div className="flex items-center justify-between mt-auto pt-2">
+                    <span className="text-[10px] font-bold text-white/60 truncate max-w-[60%]">{game.company}</span>
+                    {game.playTime && <span className="text-[10px] font-black text-yellow-400 drop-shadow-md">{game.playTime}</span>}
+                  </div>
                 </div>
-                <div className="flex items-center justify-between mt-auto pt-2">
-                  <span className="text-[10px] font-bold text-white/60 truncate group-hover:text-white/90 transition-colors">{game.company}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* Load More Button */}
+        {displayLimit < filteredGames.length && (
+          <div className="mt-12 text-center">
+            <button 
+              onClick={() => setDisplayLimit(prev => prev + 32)}
+              className="px-10 py-4 bg-[#0047BB] text-white font-black text-sm tracking-[0.2em] rounded-full hover:bg-[#003799] transition-all shadow-xl shadow-[#0047BB]/20 active:scale-95"
+            >
+              LOAD MORE RECORDS ({filteredGames.length - displayLimit} REMAINING)
+            </button>
+          </div>
+        )}
+
+        {filteredGames.length === 0 && (
+          <div className="py-24 flex flex-col items-center justify-center text-zinc-400 bg-white rounded-3xl border border-black/5">
+            <Search className="w-10 h-10 mb-4 opacity-20" />
+            <p className="font-bold text-lg">해당 조건의 게임이 없습니다.</p>
+          </div>
+        )}
       </div>
-    </div>
+    </motion.section>
     </>
   );
 };
