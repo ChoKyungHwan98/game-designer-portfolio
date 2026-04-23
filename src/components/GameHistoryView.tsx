@@ -69,6 +69,16 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
     setDisplayLimit(32);
   }, [activeGenre, searchQuery]);
 
+  React.useEffect(() => {
+    if (isIntroActive) {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => { document.body.style.overflow = 'auto'; };
+  }, [isIntroActive]);
+
   const displayedGames = filteredGames.slice(0, displayLimit);
 
   const getPt = (value: number, angleDeg: number, size: number) => {
@@ -109,9 +119,6 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
       </AnimatePresence>
 
       <motion.section 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: isIntroActive ? 0 : 1 }} 
-        transition={{ duration: 0.8 }}
         className="min-h-screen bg-transparent pt-28 pb-32 overflow-x-hidden"
       >
 

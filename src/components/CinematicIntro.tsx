@@ -149,7 +149,11 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
   );
 
   return (
-    <div className="fixed inset-0 z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply">
+    <motion.div 
+      exit={{ opacity: 0 }} 
+      transition={{ duration: 0.6, ease: "easeInOut" }} 
+      className="fixed inset-0 z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply"
+    >
       {/* ── 렌더링된 높이를 재기 위한 보이지 않는 래퍼 ── */}
       {contentHeight === 0 && (
         <div ref={contentRef} style={{ position: 'absolute', top: 0, left: 0, visibility: 'hidden', width: '100%' }}>
@@ -173,6 +177,6 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
