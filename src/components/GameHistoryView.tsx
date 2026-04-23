@@ -79,7 +79,7 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
     return `${cx + r * Math.cos(param)},${cy + r * Math.sin(param)}`;
   };
 
-  const svgSize = 340;
+  const svgSize = 420;
   const cx = svgSize / 2;
   const cy = svgSize / 2;
 
@@ -118,10 +118,10 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Minimalist Header to match GitHub design (removed search bar and big titles) */}
         
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mb-24 lg:mb-32">
           {/* Radar Chart Section */}
-          <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex flex-col items-center justify-center min-h-[400px]">
-            <h3 className="font-bold text-lg text-zinc-500 tracking-tight self-start mb-6">장르별 숙련도 차트</h3>
+          <div className="bg-white border border-black/5 rounded-4xl p-10 md:p-12 shadow-sm flex flex-col items-center justify-center min-h-[480px]">
+            <h3 className="font-bold text-xl text-zinc-500 tracking-tight self-start mb-8">장르별 숙련도 차트</h3>
             <div className="relative" style={{ width: svgSize, height: svgSize }}>
               <svg width={svgSize} height={svgSize} className="overflow-visible">
                 {bgPolygons.map((pts, i) => (
@@ -191,19 +191,19 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
           </div>
 
           {/* Stats Section */}
-          <div className="flex flex-col gap-4">
-            <div className="bg-white border border-black/5 rounded-4xl p-8 shadow-sm flex-1 flex flex-col justify-center">
-              <h3 className="font-bold text-lg text-zinc-500 tracking-tight mb-8">플레이 요약 통계</h3>
-              <ul className="space-y-6">
-                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">총 플레이</span><span className="font-black text-[#0047BB] text-xl">{ALL_GAMES.length}종 이상</span></li>
-                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">주력 플랫폼</span><span className="font-bold text-zinc-600 text-lg">PC / 콘솔</span></li>
-                <li className="flex items-center justify-between border-b border-black/5 pb-4"><span className="font-bold text-[#2C2C2C]">최장 플레이</span><span className="font-bold text-zinc-600 text-lg">메이플스토리 (15년)</span></li>
-                <li className="flex items-center justify-between"><span className="font-bold text-[#2C2C2C]">전문 분야</span><span className="font-bold text-[#0047BB] text-lg bg-[#0047BB]/10 px-3 py-1 rounded-md">RPG / 리듬</span></li>
+          <div className="flex flex-col gap-6">
+            <div className="bg-white border border-black/5 rounded-4xl p-10 md:p-12 shadow-sm flex-1 flex flex-col justify-center">
+              <h3 className="font-bold text-xl text-zinc-500 tracking-tight mb-10">플레이 요약 통계</h3>
+              <ul className="space-y-8">
+                <li className="flex items-center justify-between border-b border-black/5 pb-5"><span className="font-bold text-lg text-[#2C2C2C]">총 플레이</span><span className="font-black text-[#0047BB] text-2xl md:text-3xl">{ALL_GAMES.length}종 이상</span></li>
+                <li className="flex items-center justify-between border-b border-black/5 pb-5"><span className="font-bold text-lg text-[#2C2C2C]">주력 플랫폼</span><span className="font-bold text-zinc-600 text-xl">PC / 콘솔</span></li>
+                <li className="flex items-center justify-between border-b border-black/5 pb-5"><span className="font-bold text-lg text-[#2C2C2C]">최장 플레이</span><span className="font-bold text-zinc-600 text-xl">메이플스토리 (15년)</span></li>
+                <li className="flex items-center justify-between"><span className="font-bold text-lg text-[#2C2C2C]">전문 분야</span><span className="font-bold text-[#0047BB] text-xl bg-[#0047BB]/10 px-4 py-1.5 rounded-md">RPG / 리듬</span></li>
               </ul>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-[#0047BB] text-white border border-[#0047BB] rounded-2xl p-6 shadow-sm"><span className="block font-bold text-blue-200 mb-2">PC/콘솔</span><span className="text-3xl font-black">{pcConsoleGames.length}종</span></div>
-              <div className="bg-white border border-black/5 rounded-2xl p-6 shadow-sm"><span className="block font-bold text-zinc-400 mb-2">모바일</span><span className="text-3xl font-black text-[#2C2C2C]">{mobileGames.length}종</span></div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-[#0047BB] text-white border border-[#0047BB] rounded-3xl p-8 md:p-10 shadow-sm"><span className="block font-bold text-blue-200 text-lg mb-3">PC/콘솔</span><span className="text-4xl md:text-5xl font-black">{pcConsoleGames.length}종</span></div>
+              <div className="bg-white border border-black/5 rounded-3xl p-8 md:p-10 shadow-sm"><span className="block font-bold text-zinc-400 text-lg mb-3">모바일</span><span className="text-4xl md:text-5xl font-black text-[#2C2C2C]">{mobileGames.length}종</span></div>
             </div>
           </div>
         </div>
