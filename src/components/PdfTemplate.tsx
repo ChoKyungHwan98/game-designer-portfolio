@@ -129,6 +129,10 @@ const TOOL_PATHS: Record<string, string> = {
   Notion:      'M4.459 4.208c-.755 0-1.282.49-1.282 1.17v13.244c0 .679.527 1.17 1.282 1.17h15.082c.755 0 1.282-.491 1.282-1.17V5.378c0-.68-.527-1.17-1.282-1.17H4.459zM2.8 5.378c0-1.27 1.013-2.301 2.261-2.301h13.878C20.187 3.077 21.2 4.108 21.2 5.378v13.244c0 1.27-1.013 2.301-2.261 2.301H5.06A2.28 2.28 0 012.8 18.622V5.378zm5.553 10.603V8.895l4.896 6.945V8.125h1.196v7.856l-4.896-6.945v6.945H8.353z',
   Figma:       'M8 13c0 1.657 1.343 3 3 3s3-1.343 3-3v-3H8v3zm3-11c-1.657 0-3 1.343-3 3s1.343 3 3 3V2zm-3 6c-1.657 0-3 1.343-3 3s1.343 3 3 3V8zm9 3c0-1.657-1.343-3-3-3v6c1.657 0 3-1.343 3-3zM8 2a3 3 0 000 6h3V2H8z',
   Unity:       'M12 3.8L3.8 8.53v9.42l8.2 4.71 8.2-4.71V8.53zM12 12.35l7-4.04-1.26-2.18-5.38 3.1-6.19-4.88-1.56 1.94 4.86 3.82-4.48 2.58L6.2 14.8l5.8-3.35z',
+  ChatGPT:     'M22.28 12.12c0-1.23-.49-2.35-1.28-3.17.2-.62.31-1.28.31-1.95 0-3.31-2.69-6-6-6-1.38 0-2.64.47-3.65 1.25C10.65 1.47 9.39 1 8 1 4.69 1 2 3.69 2 7c0 .67.11 1.33.31 1.95-.79.82-1.28 1.94-1.28 3.17 0 1.23.49 2.35 1.28 3.17-.2.62-.31 1.28-.31 1.95 0 3.31 2.69 6 6 6 1.38 0 2.64-.47 3.65-1.25 1.01.78 2.27 1.25 3.65 1.25 3.31 0 6-2.69 6-6 0-.67-.11-1.33-.31-1.95.79-.82 1.28-1.94 1.28-3.17zm-10.28 7.21c-.81 0-1.58-.23-2.24-.62l.14-.08 3.51-2.03c.15-.09.24-.25.24-.42v-4.97l1.48.85c.1.06.16.17.16.29v4.02c0 .81-.66 1.47-1.47 1.47h-1.82zm-6.1-2.48c-.41-.7-.63-1.49-.63-2.31v-4.04c0-.12.06-.23.16-.29l3.48-2.01V6.15c0-.18.1-.33.25-.42l3.48-2.01c.07-.04.14-.06.21-.06.14 0 .28.08.35.21l1.48 2.56-1.48.85c-.1.06-.16.17-.16.29V11.2l-3.48 2.01c-.08.05-.13.13-.13.22v4.02l-1.81-1.04zm-1.18-7.21c0-.81.22-1.58.62-2.24l.08.14 2.03 3.51c.09.15.25.24.42.24h4.97l-.85 1.48c-.06.1-.17.16-.29.16H8c-.81 0-1.47-.66-1.47-1.47V12.12zm1.83-6.1c.7-.41 1.49-.63 2.31-.63h4.04c.12 0 .23.06.29.16l2.01 3.48h-4.14c-.18 0-.33.1-.42.25L10.36 12.1c-.04.07-.06.14-.06.21 0 .14.08.28.21.35l2.56 1.48-.85 1.48c-.06.1-.17.16-.29.16H8c-.09 0-.17-.05-.22-.13l-2.01-3.48 1.04-1.81zm7.21-1.18c.81 0 1.58.22 2.24.62l-.14-.08-3.51-2.03c-.15-.09-.24-.25-.24-.42V5.45l-1.48-.85c-.1-.06-.16-.17-.16-.29V8.33c0 .81.66 1.47 1.47 1.47h1.82zm6.1 2.48c.41.7.63 1.49.63 2.31v4.04c0 .12-.06.23-.16.29l-3.48 2.01v4.14c0 .18-.1.33-.25.42l-3.48 2.01c-.07.04-.14.06-.21.06-.14 0-.28-.08-.35-.21l-1.48-2.56 1.48-.85c.1-.06.16-.17.16-.29V12.8l3.48-2.01c.08-.05.13-.13.13-.22V6.55l1.81 1.04zM12 10.74l1.26.73v1.46l-1.26.73-1.26-.73v-1.46L12 10.74z',
+  Claude:      'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z',
+  Gemini:      'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+  Antigravity: 'M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z',
 };
 
 const ToolBadge: React.FC<{ name: string }> = ({ name }) => (
@@ -339,12 +343,15 @@ const ResumePage: React.FC<{ data: ResumeData }> = ({ data }) => (
                       <p className="text-[8.5px] text-zinc-500 font-medium pl-4 leading-snug">{tool.description}</p>
                     </div>
                   ))}
-                  <h4 className="text-[7.5px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-1 mb-1.5 mt-3">AI ASSISTANTS</h4>
-                  <div className="grid grid-cols-2 gap-1.5">
+                  <h4 style={{ fontSize: '7.5px', fontWeight: 900, color: BLUE, letterSpacing: '0.4em', textTransform: 'uppercase', borderBottom: `1px solid ${BLUE_BORDER}`, paddingBottom: '4px', marginBottom: '6px', marginTop: '12px' }}>AI ASSISTANTS</h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {data.tools.filter(t => ["ChatGPT", "Claude", "Gemini", "Antigravity"].includes(t.name)).map((tool, idx) => (
-                      <div key={idx} className="flex items-center gap-1">
-                        <div className="w-1 h-1 rounded-full bg-[#0047BB]/30" />
-                        <span className="text-[9px] font-bold text-[#1A1A1A]">{tool.name}</span>
+                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ color: DARK, display: 'flex', alignItems: 'center' }}>{renderToolIcon(tool.name)}</div>
+                          <span style={{ fontSize: '10px', fontWeight: 700, color: DARK }}>{tool.name}</span>
+                        </div>
+                        <p style={{ fontSize: '8.5px', color: MUTED, fontWeight: 500, paddingLeft: '16px', lineHeight: 1.4, margin: 0 }}>{tool.description}</p>
                       </div>
                     ))}
                   </div>

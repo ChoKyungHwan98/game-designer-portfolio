@@ -120,6 +120,10 @@ export const RESUME_DATA: ResumeData = {
     { name: "Word", description: "체계적이고 가독성 높은 기획 문서 및 사양서 작성" },
     { name: "Figma", description: "UI 와이어프레임 작성 및 프로토타입 제작" },
     { name: "Notion", description: "일반적인 문서 작성 및 간트차트를 활용한 일정 관리" },
-    { name: "Unity", description: "바이브코딩 방식으로 게임 아이디어를 빠르게 플레이어블 프로토타입으로 구현 가능" }
+    { name: "Unity", description: "바이브코딩 방식으로 게임 아이디어를 빠르게 플레이어블 프로토타입으로 구현 가능" },
+    { name: "ChatGPT", description: "방대한 데이터 크롤링 및 분석을 통한 기획 소스 확보 및 구조적 데이터 정제" },
+    { name: "Gemini", description: "고도화된 프롬프트 엔지니어링을 활용해 기획에 필요한 핵심 로직 및 아이디어 즉각 생성" },
+    { name: "Claude", description: "최신 바이브코딩 기법을 적용하여 복잡한 시스템 기획 사양의 코드 구현 및 검증" },
+    { name: "Antigravity", description: "AI 에이전트와의 협업을 통해 게임 시스템 프로토타입을 신속하게 제작 및 고도화" }
   ]
 };
