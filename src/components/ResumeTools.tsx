@@ -17,7 +17,7 @@ export const ResumeTools = ({ data }: ResumeToolsProps) => {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
         {/* Group 1: Documentation & Office */}
-        <div className="space-y-4">
+        <div className="space-y-5">
           <h4 className="text-[10px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-2 mb-3">DOCUMENTATION & OFFICE</h4>
           <div className="space-y-3">
             {data.tools.filter(t => ["Excel", "PowerPoint", "Word", "Notion"].includes(t.name)).map((tool, idx) => (
@@ -51,7 +51,7 @@ export const ResumeTools = ({ data }: ResumeToolsProps) => {
             ))}
             
             {/* AI Assistants section */}
-            <h4 className="text-[10px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-2 mb-4 mt-6">AI ASSISTANTS</h4>
+            <h4 className="text-[10px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-2 mb-4 mt-8">AI ASSISTANTS</h4>
             <div className="space-y-4">
               {data.tools.filter(t => ["ChatGPT", "Claude", "Gemini", "Antigravity"].includes(t.name)).map((tool, idx) => (
                 <div key={idx} className="flex items-start gap-4">
