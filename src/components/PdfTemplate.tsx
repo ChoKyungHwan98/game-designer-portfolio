@@ -147,13 +147,13 @@ const ToolBadge: React.FC<{ name: string }> = ({ name }) => (
 );
 
 const renderToolIcon = (name: string) => {
-  if (name === 'Figma') return <Figma className="w-3 h-3" />;
+  if (name === 'Figma') return <Figma className="w-7 h-7" />;
   if (TOOL_PATHS[name]) return (
-    <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
+    <svg viewBox="0 0 24 24" className="w-7 h-7 fill-current">
       <path d={TOOL_PATHS[name]} />
     </svg>
   );
-  return <Wrench className="w-3 h-3" />;
+  return <Wrench className="w-7 h-7" />;
 };
 
 /* ─── PAGE 1: RESUME ─────────────────────────────────────────────── */
@@ -317,14 +317,14 @@ const ResumePage: React.FC<{ data: ResumeData }> = ({ data }) => (
               {/* Group 1 */}
               <div className="space-y-2">
                 <h4 className="text-[7.5px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-1 mb-1.5">DOCUMENTATION & OFFICE</h4>
-                <div className="space-y-1.5">
+                <div className="space-y-3">
                   {data.tools.filter(t => ["Excel", "PowerPoint", "Word", "Notion"].includes(t.name)).map((tool, idx) => (
-                    <div key={idx} className="flex flex-col gap-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <div className="text-[#1A1A1A]">{renderToolIcon(tool.name)}</div>
+                    <div key={idx} className="flex items-start gap-2">
+                      <div className="text-[#1A1A1A] shrink-0 pt-0.5">{renderToolIcon(tool.name)}</div>
+                      <div className="flex flex-col gap-0.5">
                         <span className="text-[10px] font-bold text-[#1A1A1A]">{tool.name}</span>
+                        <p className="text-[8.5px] text-zinc-500 font-medium leading-snug">{tool.description}</p>
                       </div>
-                      <p className="text-[8.5px] text-zinc-500 font-medium pl-4 leading-snug">{tool.description}</p>
                     </div>
                   ))}
                 </div>
@@ -333,25 +333,25 @@ const ResumePage: React.FC<{ data: ResumeData }> = ({ data }) => (
               {/* Group 2 */}
               <div className="space-y-2">
                 <h4 className="text-[7.5px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-1 mb-1.5">CREATIVE & ENGINE</h4>
-                <div className="space-y-1.5">
+                <div className="space-y-3">
                   {data.tools.filter(t => ["Figma", "Unity"].includes(t.name)).map((tool, idx) => (
-                    <div key={idx} className="flex flex-col gap-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <div className="text-[#1A1A1A]">{renderToolIcon(tool.name)}</div>
+                    <div key={idx} className="flex items-start gap-2">
+                      <div className="text-[#1A1A1A] shrink-0 pt-0.5">{renderToolIcon(tool.name)}</div>
+                      <div className="flex flex-col gap-0.5">
                         <span className="text-[10px] font-bold text-[#1A1A1A]">{tool.name}</span>
+                        <p className="text-[8.5px] text-zinc-500 font-medium leading-snug">{tool.description}</p>
                       </div>
-                      <p className="text-[8.5px] text-zinc-500 font-medium pl-4 leading-snug">{tool.description}</p>
                     </div>
                   ))}
                   <h4 style={{ fontSize: '7.5px', fontWeight: 900, color: BLUE, letterSpacing: '0.4em', textTransform: 'uppercase', borderBottom: `1px solid ${BLUE_BORDER}`, paddingBottom: '4px', marginBottom: '6px', marginTop: '12px' }}>AI ASSISTANTS</h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {data.tools.filter(t => ["ChatGPT", "Claude", "Gemini", "Antigravity"].includes(t.name)).map((tool, idx) => (
-                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ color: DARK, display: 'flex', alignItems: 'center' }}>{renderToolIcon(tool.name)}</div>
+                      <div key={idx} style={{ display: 'flex', alignItems: 'start', gap: '8px' }}>
+                        <div style={{ color: DARK, display: 'flex', alignItems: 'center', flexShrink: 0, paddingTop: '2px' }}>{renderToolIcon(tool.name)}</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                           <span style={{ fontSize: '10px', fontWeight: 700, color: DARK }}>{tool.name}</span>
+                          <p style={{ fontSize: '8.5px', color: MUTED, fontWeight: 500, lineHeight: 1.4, margin: 0 }}>{tool.description}</p>
                         </div>
-                        <p style={{ fontSize: '8.5px', color: MUTED, fontWeight: 500, paddingLeft: '16px', lineHeight: 1.4, margin: 0 }}>{tool.description}</p>
                       </div>
                     ))}
                   </div>
