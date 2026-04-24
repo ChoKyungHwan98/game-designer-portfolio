@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, X, MousePointer2 } from 'lucide-react';
 import { EditableText } from './EditableText';
 import { ProjectDetail } from './ProjectDetail';
+import { ProjectCard } from './ProjectCard';
 import type { Project } from '../types';
 
 interface PortfolioProps {
@@ -15,34 +16,24 @@ interface PortfolioProps {
   initialProjectId?: number | null;
 }
 
-export const Portfolio = ({ isEditing, projects, setProjects, onBack, initialProjectId }: PortfolioProps) => {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+export const Portfolio = ({ onProjectClick, isEditing, projects, setProjects, onBack, initialProjectId }: PortfolioProps) => {
 
   useEffect(() => {
     if (initialProjectId != null) {
       const target = projects.find(p => p.id === initialProjectId);
-      if (target) setSelectedProject(target);
+      if (target) onProjectClick(target);
     }
     window.scrollTo(0, 0);
-  }, [initialProjectId, projects]);
+  }, [initialProjectId, projects, onProjectClick]);
 
-  const categories = ['전체', ...Array.from(new Set(projects.flatMap(p => p.roles)))];
+  const categories = ['전체', ...Array.from(new Set(projects.flatMap(p => p.roles || []).filter(Boolean)))];
   const [activeCategory, setActiveCategory] = useState('전체');
 
   const filteredProjects = activeCategory === '전체'
     ? projects
     : projects.filter(p => p.roles && p.roles.includes(activeCategory));
 
-  useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedProject]);
+
 
   return (
     <div className="min-h-screen bg-transparent relative">
@@ -96,122 +87,44 @@ export const Portfolio = ({ isEditing, projects, setProjects, onBack, initialPro
             })}
           </div>
         </div>
-
         {/* Polished Project Grid with Refined Hierarchy */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12"
+          >
+            {filteredProjects.map((project, index) => (
               <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-zinc-100 cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-[#0047BB]/20 hover:shadow-[0_40px_80px_-24px_rgba(0,71,187,0.12)] transition-all duration-700"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ 
+                  duration: 0.3, 
+                  delay: Math.min(index * 0.02, 0.3),
+                  ease: [0.16, 1, 0.3, 1] 
+                }}
               >
-                {/* Card Image with Depth Overlay */}
-                <div className="relative aspect-16/10 w-full overflow-hidden bg-zinc-50 shrink-0">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center">
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 font-bold text-sm">
-                      <MousePointer2 className="w-4 h-4" /> 상세 내용 보기
-                    </div>
-                  </div>
-                  
-                  {/* Status Overlay for instant visibility */}
-                  {project.status && (
-                    <div className="absolute top-4 right-4 z-20">
-                      <span className={`text-[10px] font-black px-3 py-1.5 rounded-lg border backdrop-blur-md shadow-xl leading-tight transition-all duration-500 ${
-                         project.status === '미출시' 
-                           ? 'bg-zinc-800/80 text-white border-white/10' 
-                           : 'bg-[#0047BB]/90 text-white border-white/20'
-                       }`}>
-                        {project.status}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Refined Content Structure */}
-                <div className="p-8 pb-10 flex-1 flex flex-col bg-white relative z-10">
-                  <div className="flex flex-col gap-2 mb-4">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.roles.map(role => (
-                        <span key={role} className="text-[9px] font-black text-[#0047BB] uppercase tracking-[0.15em] opacity-80">{role}</span>
-                      ))}
-                    </div>
-                    <h4 className="text-2xl font-display font-black tracking-tight text-zinc-900 transition-colors leading-[1.1] group-hover:text-[#0047BB]">
-                      {project.title}
-                    </h4>
-                  </div>
-
-                  <p className="text-zinc-500 text-[14.5px] leading-relaxed mb-8 line-clamp-3 font-medium opacity-90 group-hover:opacity-100 transition-opacity">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-auto">
-                    {project.tags.map((tag, tIdx) => (
-                      <span key={tIdx} className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest bg-zinc-50 px-2.5 py-1.2 rounded-lg border border-zinc-100 group-hover:border-zinc-200 group-hover:text-zinc-600 transition-all">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <ProjectCard 
+                  project={project} 
+                  idx={projects.findIndex(p => p.id === project.id)}
+                  isEditing={isEditing}
+                  projects={projects}
+                  setProjects={setProjects}
+                  onProjectClick={onProjectClick}
+                />
               </motion.div>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
         </div>
       </motion.section>
 
-      {/* Detail Overlay */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-100">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            />
 
-            {/* Panel */}
-              <div className="absolute inset-0 flex items-center justify-center p-0 md:p-6 pointer-events-none">
-                <motion.div
-                  initial={{ opacity: 0, y: 40, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 40, scale: 0.97 }}
-                  transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-                  className="w-[98vw] md:w-[95vw] h-[98vh] md:h-[95vh] max-w-[1600px] bg-bg-main md:rounded-3xl shadow-[0_40px_80px_-20px_rgba(0,0,0,0.35)] overflow-hidden relative pointer-events-auto flex flex-col"
-                >
-
-                {/* Content - height fills modal, scroll managed per-tab */}
-                <div className="flex-1 overflow-hidden flex flex-col min-h-0">
-                  <ProjectDetail
-                    project={selectedProject}
-                    onBack={() => setSelectedProject(null)}
-                    isEditing={isEditing}
-                    onSaveContent={(c) => {
-                      const p = [...projects];
-                      const i = p.findIndex(pp => pp.id === selectedProject.id);
-                      if (i !== -1) { p[i].content = c; setProjects(p); setSelectedProject({ ...selectedProject, content: c }); }
-                    }}
-                  />
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, X, MousePointer2 } from 'lucide-react';
 import { EditableText } from './EditableText';
 import type { Project } from '../types';
 
@@ -35,11 +35,11 @@ export const ProjectCard = ({ project, idx, isEditing, projects, setProjects, on
 
         <div className={`relative z-10 transition-all duration-700 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0 lg:opacity-100 lg:translate-y-0'}`}>
           <div className={`flex gap-2 mb-4 ${isActive ? 'flex-wrap items-center' : 'flex-col items-start'}`}>
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 text-[10px] font-black text-white tracking-[0.1em] uppercase rounded-lg w-fit">
+            <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1.5 text-[10px] font-black text-white tracking-widest uppercase rounded-lg w-fit">
               <EditableText value={project.roles ? project.roles.join(', ') : ''} onSave={(v) => { const p = [...projects]; p[idx].roles = v.split(',').map(s=>s.trim()); setProjects(p); }} isEditing={isEditing} />
             </div>
             {project.status && (
-              <div className={`px-3.5 py-1.5 text-[10px] font-black tracking-[0.1em] uppercase rounded-lg w-fit border backdrop-blur-md shadow-xl ${project.status === '미출시' ? 'bg-zinc-800/80 text-zinc-300 border-white/10' : 'bg-[#0047BB]/90 text-white border-white/20'}`}>
+              <div className={`px-3.5 py-1.5 text-[10px] font-black tracking-widest uppercase rounded-lg w-fit border backdrop-blur-md shadow-xl ${project.status === '미출시' ? 'bg-zinc-800/80 text-zinc-300 border-white/10' : 'bg-[#0047BB]/90 text-white border-white/20'}`}>
                 <EditableText value={project.status} onSave={(v) => { const p = [...projects]; p[idx].status = v; setProjects(p); }} isEditing={isEditing} />
               </div>
             )}
@@ -65,47 +65,63 @@ export const ProjectCard = ({ project, idx, isEditing, projects, setProjects, on
   }
 
   return (
-    <motion.div className="group relative bg-white border border-zinc-100 rounded-[2rem] overflow-hidden hover:border-[#0047BB]/20 hover:shadow-[0_32px_64px_-16px_rgba(0,71,187,0.12)] transition-all duration-700 flex flex-col h-full">
+    <motion.div 
+      onClick={() => onProjectClick(project)}
+      className="group relative bg-white border border-zinc-100 rounded-4xl overflow-hidden hover:border-[#0047BB]/20 hover:shadow-[0_40px_80px_-24px_rgba(0,71,187,0.12)] transition-all duration-700 flex flex-col h-full cursor-pointer"
+    >
       {isEditing && (
         <button onClick={(e) => { e.stopPropagation(); if (confirm("삭제하시겠습니까?")) { setProjects(projects.filter(p => p.id !== project.id)); }}}
-          className="absolute top-5 right-5 z-20 p-2.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all shadow-xl hover:scale-110" title="삭제">
+          className="absolute top-5 right-5 z-30 p-2.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all shadow-xl hover:scale-110" title="삭제">
           <X className="w-4 h-4" />
         </button>
       )}
+      
       <div className="overflow-hidden relative bg-zinc-50 shrink-0 aspect-16/10 border-b border-zinc-100">
         <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 absolute inset-0" referrerPolicy="no-referrer" />
+        
+        {/* Hover Overlay */}
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 font-bold text-sm">
+            <MousePointer2 className="w-4 h-4" /> 상세 내용 보기
+          </div>
+        </div>
+
+        {/* Status Badge */}
         <div className="absolute top-5 left-5 flex flex-wrap items-center gap-2 z-10">
-          <div className="bg-white/90 backdrop-blur-md border border-black/5 rounded-lg px-3 py-1.5 text-[9px] font-black text-[#2C2C2C] tracking-[0.1em] uppercase shadow-sm w-fit">
+          <div className="bg-white/90 backdrop-blur-md border border-black/5 rounded-lg px-3 py-1.5 text-[9px] font-black text-[#2C2C2C] tracking-widest uppercase shadow-sm w-fit">
             <EditableText value={project.roles ? project.roles.join(', ') : ''} onSave={(v) => { const p = [...projects]; p[idx].roles = v.split(',').map(s=>s.trim()); setProjects(p); }} isEditing={isEditing} />
           </div>
           {project.status && (
-            <div className={`border rounded-lg px-3 py-1.5 text-[9px] font-black tracking-[0.1em] uppercase shadow-sm w-fit backdrop-blur-md transition-all duration-500 ${project.status === '미출시' ? 'bg-zinc-100/90 text-zinc-500 border-zinc-200 shadow-none' : 'bg-[#0047BB]/90 text-white border-white/10 shadow-lg shadow-[#0047BB]/20'}`}>
+            <div className={`border rounded-lg px-3 py-1.5 text-[9px] font-black tracking-widest uppercase shadow-sm w-fit backdrop-blur-md transition-all duration-500 ${project.status === '미출시' ? 'bg-zinc-800/80 text-white border-white/10' : 'bg-[#0047BB]/90 text-white border-white/20'}`}>
               <EditableText value={project.status} onSave={(v) => { const p = [...projects]; p[idx].status = v; setProjects(p); }} isEditing={isEditing} />
             </div>
           )}
         </div>
       </div>
-      <div className="flex-1 flex flex-col justify-between p-8 pb-10">
-        <div>
-          <h3 className="text-2xl font-display font-black mb-3 text-zinc-900 group-hover:text-[#0047BB] transition-colors line-clamp-1 leading-tight tracking-tight">
-            <EditableText value={project.title} onSave={(v) => { const p = [...projects]; p[idx].title = v; setProjects(p); }} isEditing={isEditing} />
-          </h3>
-          <p className="text-zinc-500 text-[14.5px] leading-relaxed mb-8 line-clamp-2 font-medium opacity-90 group-hover:opacity-100 transition-opacity">
-            <EditableText value={project.description} onSave={(v) => { const p = [...projects]; p[idx].description = v; setProjects(p); }} isEditing={isEditing} multiline />
-          </p>
-          <div className="flex flex-wrap gap-1.5 mb-10">
-            {project.tags.slice(0, 3).map((tag, tagIdx) => (
-              <span key={tagIdx} className="text-[10px] font-bold px-2.5 py-1.2 bg-zinc-50 border border-zinc-100 rounded-lg text-zinc-400 uppercase tracking-widest group-hover:border-zinc-200 group-hover:text-zinc-500 transition-all">
-                #{tag}
-              </span>
+
+      <div className="flex-1 flex flex-col p-8 pb-10">
+        <div className="flex flex-col gap-2 mb-4">
+          <div className="flex flex-wrap gap-1.5">
+            {project.roles && project.roles.map(role => (
+              <span key={role} className="text-[9px] font-black text-[#0047BB] uppercase tracking-[0.15em] opacity-80">{role}</span>
             ))}
           </div>
+          <h3 className="text-2xl font-display font-black tracking-tight text-zinc-900 group-hover:text-[#0047BB] transition-colors leading-[1.1]">
+            <EditableText value={project.title} onSave={(v) => { const p = [...projects]; p[idx].title = v; setProjects(p); }} isEditing={isEditing} />
+          </h3>
         </div>
-        <button onClick={(e) => { e.stopPropagation(); onProjectClick(project); }}
-          className="w-full relative overflow-hidden group/btn py-4 bg-white border border-zinc-200 text-[#1A1A1A] font-bold text-xs tracking-widest transition-all duration-700 flex items-center justify-center gap-2 uppercase rounded-2xl hover:border-[#0047BB] hover:shadow-[0_20px_40px_-12px_rgba(0,71,187,0.2)]">
-          <span className="relative z-10 flex items-center gap-2 transition-colors duration-700 group-hover/btn:text-white">기획서 상세 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
-          <div className="absolute inset-0 bg-[#0047BB] scale-x-0 origin-left group-hover/btn:scale-x-100 transition-transform duration-700" />
-        </button>
+
+        <p className="text-zinc-500 text-[14.5px] leading-relaxed mb-8 line-clamp-3 font-medium opacity-90 group-hover:opacity-100 transition-opacity">
+          <EditableText value={project.description} onSave={(v) => { const p = [...projects]; p[idx].description = v; setProjects(p); }} isEditing={isEditing} multiline />
+        </p>
+
+        <div className="flex flex-wrap gap-1.5 mt-auto">
+          {project.tags.map((tag, tagIdx) => (
+            <span key={tagIdx} className="text-[10px] font-bold px-2.5 py-1.2 bg-zinc-50 border border-zinc-100 rounded-lg text-zinc-400 uppercase tracking-widest group-hover:border-zinc-200 group-hover:text-zinc-500 transition-all">
+              #{tag}
+            </span>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
