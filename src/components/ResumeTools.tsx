@@ -22,8 +22,8 @@ export const ResumeTools = ({ data }: ResumeToolsProps) => {
           <div className="space-y-3">
             {data.tools.filter(t => ["Excel", "PowerPoint", "Word", "Notion"].includes(t.name)).map((tool, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="w-8 h-8 text-[#1A1A1A] shrink-0 pt-1 flex items-center justify-center">
-                    {BRAND_ICONS[tool.name] || <Wrench className="w-6 h-6 text-zinc-400" />}
+                  <div className="text-[#1A1A1A] shrink-0 pt-1 group">
+                    {BRAND_ICONS[tool.name] || <Wrench className="w-8 h-8 text-zinc-400" />}
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-[14px] font-bold text-[#1A1A1A]">{tool.name}</span>
@@ -40,8 +40,8 @@ export const ResumeTools = ({ data }: ResumeToolsProps) => {
           <div className="space-y-4">
             {data.tools.filter(t => ["Figma", "Unity"].includes(t.name)).map((tool, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="w-8 h-8 text-[#1A1A1A] shrink-0 pt-1 flex items-center justify-center">
-                    {BRAND_ICONS[tool.name] || <Wrench className="w-6 h-6 text-zinc-400" />}
+                  <div className="text-[#1A1A1A] shrink-0 pt-1 group">
+                    {BRAND_ICONS[tool.name] || <Wrench className="w-8 h-8 text-zinc-400" />}
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-[14px] font-bold text-[#1A1A1A]">{tool.name}</span>
@@ -49,14 +49,14 @@ export const ResumeTools = ({ data }: ResumeToolsProps) => {
                   </div>
                 </div>
             ))}
-            
+
             {/* AI Assistants section */}
             <h4 className="text-[10px] font-black text-[#0047BB] tracking-[0.4em] uppercase border-b border-[#0047BB]/10 pb-2 mb-4 mt-8">AI ASSISTANTS</h4>
             <div className="space-y-4">
               {data.tools.filter(t => ["ChatGPT", "Claude", "Gemini", "Antigravity"].includes(t.name)).map((tool, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="w-8 h-8 text-[#1A1A1A] shrink-0 pt-1 flex items-center justify-center">
-                    {BRAND_ICONS[tool.name] || <Wrench className="w-6 h-6 text-zinc-400" />}
+                  <div className="text-[#1A1A1A] shrink-0 pt-1 group">
+                    {BRAND_ICONS[tool.name] || <Wrench className="w-8 h-8 text-zinc-400" />}
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-[14px] font-bold text-[#1A1A1A]">{tool.name}</span>
