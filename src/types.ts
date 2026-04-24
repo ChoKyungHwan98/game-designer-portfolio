@@ -80,10 +80,12 @@ export interface ResumeData {
   selfIntroduction?: string;
   selfIntroductions?: {
     navTitle: string;
+    question?: string;
     logline: string;
     hook: string;
     body: string;
     pullQuote?: string;
+    steps?: { title: string; desc?: string }[];
     highlights?: { bold: string; em: string }[];
     closing?: string;
   }[];
