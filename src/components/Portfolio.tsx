@@ -52,7 +52,7 @@ export const Portfolio = ({ onProjectClick, isEditing, projects, setProjects, on
 
         {/* Polished Filter Bar with Sliding Indicator */}
         <div className="flex flex-col items-center mb-16 relative">
-          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-zinc-100/50 backdrop-blur-xl rounded-[2rem] border border-black/5">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1.5 bg-zinc-100/50 backdrop-blur-xl rounded-4xl border border-black/5">
             {categories.map((category) => {
               const count = category === '전체' 
                 ? projects.length 
@@ -63,7 +63,7 @@ export const Portfolio = ({ onProjectClick, isEditing, projects, setProjects, on
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`relative px-6 py-3 rounded-[1.5rem] transition-all duration-500 group flex items-center gap-2.5 overflow-hidden min-w-fit ${
+                  className={`relative px-6 py-3 rounded-3xl transition-all duration-500 group flex items-center gap-2.5 overflow-hidden min-w-fit ${
                     isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-900'
                   }`}
                 >
