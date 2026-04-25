@@ -122,7 +122,7 @@ export const RESUME_DATA: ResumeData = {
       "score": "800"
     },
     {
-      "date": "2017",
+      "date": "2016",
       "name": "TOEFL",
       "score": "100"
     },
