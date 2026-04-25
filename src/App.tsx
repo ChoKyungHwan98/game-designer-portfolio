@@ -22,8 +22,20 @@ import { useEditableContent } from './hooks/useEditableContent';
 import { RESUME_DATA, PROJECTS, GAME_HISTORY, SKILLS } from './data';
 import type { Project, ResumeData, GameHistory, Skill } from './types';
 
+type ViewType = 'home' | 'resume' | 'project-detail' | 'portfolio' | 'all-projects' | 'game-history' | 'cover-letter';
+
 function App() {
-  const [view, setView] = useState<'home' | 'resume' | 'project-detail' | 'portfolio' | 'all-projects' | 'game-history' | 'cover-letter'>('home');
+  const [view, setView] = useState<ViewType>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get('view') as ViewType;
+      const validViews: ViewType[] = ['home', 'resume', 'project-detail', 'portfolio', 'all-projects', 'game-history', 'cover-letter'];
+      if (validViews.includes(viewParam)) {
+        return viewParam;
+      }
+    }
+    return 'home';
+  });
   const [isEditing, setIsEditing] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -79,7 +91,7 @@ function App() {
 
   const [returnScrollY, setReturnScrollY] = useState<number>(0);
 
-  const changeView = (newView: typeof view) => {
+  const changeView = (newView: ViewType) => {
     const isResumeTransition = 
       (view === 'resume' || view === 'cover-letter') && 
       (newView === 'resume' || newView === 'cover-letter');
@@ -88,6 +100,13 @@ function App() {
       setReturnScrollY(window.scrollY);
     }
     
+    // Update URL without reloading the page
+    if (newView === 'home') {
+      window.history.pushState({ view: newView }, '', window.location.pathname);
+    } else {
+      window.history.pushState({ view: newView }, '', `?view=${newView}`);
+    }
+
     setView(newView);
 
     // 사용자 요청: 이력서 <-> 자기소개서 전환 시에만 위로 스크롤
@@ -99,8 +118,21 @@ function App() {
     }
   };
 
+  // 브라우저 뒤로가기(popstate) 이벤트 대응
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get('view') as ViewType;
+      const validViews: ViewType[] = ['home', 'resume', 'project-detail', 'portfolio', 'all-projects', 'game-history', 'cover-letter'];
+      setView(validViews.includes(viewParam) ? viewParam : 'home');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const handleNavClick = (id: string) => {
-    setView('home');
+    changeView('home');
     setTimeout(() => {
       if (id === 'hero-top') { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveSection(''); return; }
       const element = document.getElementById(id);
