@@ -50,9 +50,17 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
   const mobileCount = ALL_GAMES.filter(g => g.category === 'Mobile').length;
 
   useEffect(() => {
-    // Body scroll lock during intro (maintains it until AnimatePresence unmounts this component completely)
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = 'var(--scrollbar-width)';
+    // 스크롤바를 숨기지 않고 휠/터치 이벤트만 막아서 레이아웃 시프트(가운데 정렬 흔들림) 원천 차단
+    const preventScroll = (e: Event) => e.preventDefault();
+    const preventKey = (e: KeyboardEvent) => {
+      if (['Space', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
+        e.preventDefault();
+      }
+    };
+    
+    window.addEventListener('wheel', preventScroll, { passive: false });
+    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener('keydown', preventKey as EventListener, { passive: false });
 
     if (contentRef.current) {
       // 렌더링된 실제 높이 계산
@@ -60,8 +68,9 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     }
 
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      window.removeEventListener('keydown', preventKey as EventListener);
     };
   }, []);
 
@@ -161,8 +170,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
     <motion.div 
       exit={{ opacity: 0 }} 
       transition={{ duration: 0.6, ease: "easeInOut" }} 
-      className="fixed inset-0 z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply"
-      style={{ paddingRight: 'var(--scrollbar-width)' }}
+      className="absolute top-0 left-0 w-full min-h-screen z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply"
     >
       {/* ── 렌더링된 높이를 재기 위한 보이지 않는 래퍼 ── */}
       {contentHeight === 0 && (
