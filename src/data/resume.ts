@@ -127,9 +127,9 @@ export const RESUME_DATA: ResumeData = {
       "score": "100"
     },
     {
-      "date": "2016",
+      "date": "2015",
       "name": "新HSK 5급",
-      "score": "190점"
+      "score": "183점"
     }
   ],
   "selfIntroductions": [
