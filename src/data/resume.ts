@@ -92,7 +92,7 @@ export const RESUME_DATA: ResumeData = {
         "기준 TTK(Time to Kill) 및 PDPS 기반의 스테이지, 몬스터, 장비 성장 지수 설계",
         "인플레이션 제어를 위한 4종 재화(골드, 스크랩 등) 순환 구조 및 방치 보상 밸런싱"
       ],
-      "teamSize": "기획 6명 / 프로그래밍 4명",
+      "teamSize": "기획 7명 / 프로그래밍 4명",
       "description": "팀장 | 전투 및 경제 밸런스 기획, 방치 시스템 설계"
     },
     {
@@ -101,7 +101,7 @@ export const RESUME_DATA: ResumeData = {
       "details": [
         "무기 교체 시스템, 맵 프리팹 구조, 코어 룰 기획"
       ],
-      "teamSize": "기획 5명 / 프로그래밍 4명",
+      "teamSize": "기획 6명 / 프로그래밍 4명",
       "description": "팀장 | 게임 전체 룰 및 시스템 기획"
     },
     {
