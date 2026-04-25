@@ -77,12 +77,18 @@ export const GameHistoryView = ({ onBack }: GameHistoryViewProps) => {
 
   React.useEffect(() => {
     if (isIntroActive) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
       window.scrollTo(0, 0);
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
     }
-    return () => { document.body.style.overflow = 'auto'; };
+    return () => { 
+      document.body.style.overflow = ''; 
+      document.body.style.paddingRight = '';
+    };
   }, [isIntroActive]);
 
   const displayedGames = filteredGames.slice(0, displayLimit);
