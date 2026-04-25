@@ -44,22 +44,15 @@ const fallbackBg = (genre: string) => {
 export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
-  const [scrollbarWidth, setScrollbarWidth] = useState(0);
   const vh = typeof window !== 'undefined' ? window.innerHeight : 900;
 
   const pcCount = ALL_GAMES.filter(g => ['Pc', 'PC', 'Console'].includes(g.category)).length;
   const mobileCount = ALL_GAMES.filter(g => g.category === 'Mobile').length;
 
   useEffect(() => {
-    let scrollWidth = 0;
-    if (typeof window !== 'undefined') {
-      scrollWidth = window.innerWidth - document.documentElement.clientWidth;
-      setScrollbarWidth(scrollWidth);
-    }
-    
     // Body scroll lock during intro (maintains it until AnimatePresence unmounts this component completely)
     document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = `${scrollWidth}px`;
+    document.body.style.paddingRight = 'var(--scrollbar-width)';
 
     if (contentRef.current) {
       // 렌더링된 실제 높이 계산
@@ -169,7 +162,7 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
       exit={{ opacity: 0 }} 
       transition={{ duration: 0.6, ease: "easeInOut" }} 
       className="fixed inset-0 z-[2000] overflow-hidden bg-bg-main bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] bg-blend-multiply"
-      style={{ paddingRight: scrollbarWidth }}
+      style={{ paddingRight: 'var(--scrollbar-width)' }}
     >
       {/* ── 렌더링된 높이를 재기 위한 보이지 않는 래퍼 ── */}
       {contentHeight === 0 && (
