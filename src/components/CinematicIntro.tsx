@@ -51,13 +51,25 @@ export const CinematicIntro = ({ onComplete }: CinematicIntroProps) => {
   const mobileCount = ALL_GAMES.filter(g => g.category === 'Mobile').length;
 
   useEffect(() => {
+    let scrollWidth = 0;
     if (typeof window !== 'undefined') {
-      setScrollbarWidth(window.innerWidth - document.documentElement.clientWidth);
+      scrollWidth = window.innerWidth - document.documentElement.clientWidth;
+      setScrollbarWidth(scrollWidth);
     }
+    
+    // Body scroll lock during intro (maintains it until AnimatePresence unmounts this component completely)
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollWidth}px`;
+
     if (contentRef.current) {
       // 렌더링된 실제 높이 계산
       setContentHeight(contentRef.current.scrollHeight);
     }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
   }, []);
 
   const dur = Math.max(1.2, (contentHeight - vh) / 5000);
