@@ -85,7 +85,7 @@ export const RESUME_DATA: ResumeData = {
   ],
   "experience": [
     {
-      "title": "도로시아 (스팀펑크 판타지 방치형 RPG)",
+      "title": "도로시아 (방치형 핵앤슬래시 RPG)",
       "period": "2026.02 - 2026.04",
       "details": [
         "게임 전체 파워 밸런스 설계",
@@ -96,7 +96,7 @@ export const RESUME_DATA: ResumeData = {
       "description": "팀장 | 전투 및 경제 밸런스 기획, 방치 시스템 설계"
     },
     {
-      "title": "Digreed (2D 탑뷰 로그라이트)",
+      "title": "Digreed (로그라이트 RPG)",
       "period": "2025.12 - 2026.01",
       "details": [
         "무기 교체 시스템, 맵 프리팹 구조, 코어 룰 기획"
@@ -105,7 +105,7 @@ export const RESUME_DATA: ResumeData = {
       "description": "팀장 | 게임 전체 룰 및 시스템 기획"
     },
     {
-      "title": "침묵의 저택 (메이플월드 호러게임)",
+      "title": "침묵의 저택 (횡스크롤 호러)",
       "period": "2025.11",
       "details": [
         "추격자 AI 행동 패턴, 시야 축소 메카닉, 아이템 획득 및 탈출 구조 기획",
